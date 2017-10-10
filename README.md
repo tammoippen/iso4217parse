@@ -9,6 +9,19 @@
 
 Parse currencies (symbols and codes) from and to [ISO4217](https://en.wikipedia.org/wiki/ISO_4217).
 
+Similar to [iso4217](https://github.com/spoqa/iso4217) package, but 
+ * data is aquired by scraping wikipedia (see [below](#data-aquisition)) - this is repeatable and you stay on the most current data
+ * currency symbols are currated by hand - this allows some fuzzy currency matching
+ * no download and parsing during install
+ * no external dependancies (`enum34`)
+
+When you want to *reuse* the [`data.json`](https://github.com/tammoippen/iso4217parse/blob/master/iso4217parse/data.json) file for your projects, please leave a attribution note. I licence the file under (CC BY 4.0).
+
+Install:
+```
+pip install iso4217parse
+```
+
 ## Documentation
 
 Each currency is modeled as a `collections.namedtuple`:
@@ -244,13 +257,14 @@ Returns:
 
 Basic ISO4217 currency information is gathered from wikipedia: https://en.wikipedia.org/wiki/ISO_4217 . The tables are parsed with `gen_data.py` and stored in `iso4217parse/data.json`. This gives information for `alpha3`, `code_num`, `name`, `minor` and `countries`. The currency symbol information is hand gathered from:
 
-* individuel wikipedia pages, i.e. [EUR](https://en.wikipedia.org/wiki/Euro) has a `Denominations`->`Symbol` section.
+* individuel wikipedia pages, i.e. [EUR](https://en.wikipedia.org/wiki/Euro) has a `Denominations` -> `Symbol` section.
 * http://www.iotafinance.com/en/ISO-4217-Currency-Codes.html
-* http://www.xe.com/currency/ , i.e. [GBP](http://www.xe.com/currency/gbp-british-pound) has a `Currency Facts`->`Symbol` section
+* http://www.xe.com/currency/ , i.e. [GBP](http://www.xe.com/currency/gbp-british-pound) has a `Currency Facts` -> `Symbol` section
 
 and stored in `iso4217parse/symbols.json`. Each currency can have multiple currency symbols - the first symbol in the list is the (opinionated) choice
 for the currency.
 
 **Contribution Note**: Possible ways to contribute here:
+
 * hand check symbols for currency code.
 * automatic generation of the `iso4217parse/symbols.json` file.
