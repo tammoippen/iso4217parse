@@ -1,0 +1,10 @@
+# Python 3
+__pycache__/
+.cache/
+.coverage*
+*.egg-info/
+
+*.py[cod]
+
+# macOS
+.DS_Store

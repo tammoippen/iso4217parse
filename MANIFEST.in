@@ -1,0 +1,3 @@
+include setup.py README.md LICENSE.txt
+exclude gen_data.py
+recursive-include iso4217parse *.py *.json
