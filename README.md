@@ -9,13 +9,14 @@
 
 Parse currencies (symbols and codes) from and to [ISO4217](https://en.wikipedia.org/wiki/ISO_4217).
 
-Similar to [iso4217](https://github.com/spoqa/iso4217) package, but 
+Similar to [iso4217](https://github.com/spoqa/iso4217) package, but
+
  * data is aquired by scraping wikipedia (see [below](#data-aquisition)) - this is repeatable and you stay on the most current data
  * currency symbols are currated by hand - this allows some fuzzy currency matching
  * no download and parsing during install
  * no external dependancies (`enum34`)
 
-When you want to *reuse* the [`data.json`](https://github.com/tammoippen/iso4217parse/blob/master/iso4217parse/data.json) file for your projects, please leave a attribution note. I licence the file under (CC BY 4.0).
+When you want to *reuse* the [*data.json*](https://github.com/tammoippen/iso4217parse/blob/master/iso4217parse/data.json) file for your projects, please leave a attribution note. I licence the file under (CC BY 4.0).
 
 Install:
 ```
