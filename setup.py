@@ -10,7 +10,7 @@ except(IOError, ImportError):
     long_description = open('README.md').read()
 
 
-version = '0.1'
+version = '0.2'
 
 setup(
     name='iso4217parse',
