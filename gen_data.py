@@ -63,6 +63,32 @@ alt_iso3166 = {
     'Somaliland': 'SO',
     'Transnistria': 'MD',
     'Venezuela': 'VE',
+    'Caribbean Netherlands': 'BQ',
+    'British Virgin Islands': 'VG',
+    'Federated States of Micronesia': 'FM',
+    'U.S. Virgin Islands': 'VI',
+    'Republic of the Congo': 'CG',
+    'Sint Maarten': 'SX',
+    'Cocos   Islands': 'CC',
+    'the Isle of Man': 'IM',
+    'and Guernsey': 'GG',
+    'Pitcairn Islands': 'PN',
+    'French territories of the Pacific Ocean: French Polynesia': 'PF',
+    'Kosovo': 'XK'
+}
+
+additional_countries = {
+    'EUR': ['Åland Islands', 'French Guiana', 'French Southern Territories', 'Holy See',
+            'Saint Martin (French part)'],
+    'SEK': ['Åland Islands'],
+    'EGP': ['Palestine, State of'],  # see https://en.wikipedia.org/wiki/State_of_Palestine
+    'ILS': ['Palestine, State of'],
+    'JOD': ['Palestine, State of'],
+    'FKP': ['South Georgia and the South Sandwich Islands'],
+    # 'Sahrawi peseta': ['Western Sahara'],
+    'MAD': ['Western Sahara'],
+    'DZD': ['Western Sahara'],
+    'MRO': ['Western Sahara'],
 }
 
 # get active table
@@ -79,11 +105,14 @@ for row in tables[1].findAll('tr'):
             code_num=int(tds[1].text),
             minor=minor,
             name=re.sub(r'\[[0-9]+\]', r'', tds[3].text).strip(),
-            countries=[c.strip() for c in tds[4].text.replace('\xa0', '').split(',')])
+            countries=tds[4].text.replace('\xa0', ''),
+        )
 
-        d['countries'] = [re.sub(r'\([A-Z]+\)', r'', c) for c in d['countries']]
-        d['countries'] = [re.sub(r'\[[0-9]+\]', r'', c).strip() for c in d['countries']]
-        d['countries'] = [c for c in d['countries'] if c]
+        d['countries'] = re.sub(r'\([^)]+\)', r' ', d['countries'])
+        d['countries'] = re.sub(r'\[[0-9]+\]', r' ', d['countries']).strip()
+        d['countries'] = [c.strip() for c in d['countries'].split(',') if c]
+        if d['code'] in additional_countries:
+            d['countries'] += additional_countries[d['code']]
         ccodes = []
         for c in d['countries']:
             if c in alt_iso3166:
@@ -99,6 +128,8 @@ for row in tables[1].findAll('tr'):
                     code = iso3166.countries.get(d['code_num'], None)
                     if code:
                         ccodes += [code.alpha2]
+        if len(d['countries']) != len(set(ccodes)) and d['code'] not in {'SHP', 'XDR', 'XSU', 'XUA'}:
+            print(d['countries'], set(ccodes))
         d['country_codes'] = sorted(set(ccodes))
         active += [d]
 
@@ -119,9 +150,9 @@ for row in tables[2].findAll('tr'):
         d = dict(
             code=tds[0].text,
             minor=minor,
-            name=re.sub(r'\[[0-9]+\]', r'', tds[3].text).strip(),
+            name=re.sub(r'\[[0-9]+\]', r'', tds[3].find('a').text).strip(),
             countries=[a.text.strip() for a in tds[4].findAll('a')])
-        d['countries'] = [re.sub(r'\([A-Z]+\)', r'', c) for c in d['countries']]
+        d['countries'] = [re.sub(r'\([^)]+\)', r'', c) for c in d['countries']]
         d['countries'] = [re.sub(r'\[[0-9]+\]', r'', c).strip() for c in d['countries']]
         d['countries'] = [c for c in d['countries'] if c]
 

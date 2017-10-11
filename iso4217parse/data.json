@@ -60,7 +60,8 @@
         "alpha3": "ANG",
         "code_num": 532,
         "countries": [
-            "CW"
+            "CW",
+            "SX"
         ],
         "minor": 2,
         "name": "Netherlands Antillean guilder",
@@ -518,7 +519,7 @@
             "HK"
         ],
         "minor": 2,
-        "name": "Chinese yuan (when traded offshore)",
+        "name": "Chinese yuan",
         "symbols": [
             "CN¥",
             "￥",
@@ -535,7 +536,7 @@
             "TW"
         ],
         "minor": 2,
-        "name": "Chinese yuan (when traded offshore)",
+        "name": "Chinese yuan",
         "symbols": [
             "CN¥",
             "￥",
@@ -724,7 +725,8 @@
         "alpha3": "DZD",
         "code_num": 12,
         "countries": [
-            "DZ"
+            "DZ",
+            "EH"
         ],
         "minor": 2,
         "name": "Algerian dinar",
@@ -737,7 +739,8 @@
         "alpha3": "EGP",
         "code_num": 818,
         "countries": [
-            "EG"
+            "EG",
+            "PS"
         ],
         "minor": 2,
         "name": "Egyptian pound",
@@ -791,6 +794,7 @@
         "countries": [
             "AD",
             "AT",
+            "AX",
             "BE",
             "BL",
             "CY",
@@ -799,6 +803,7 @@
             "ES",
             "FI",
             "FR",
+            "GF",
             "GP",
             "GR",
             "IE",
@@ -808,6 +813,7 @@
             "LV",
             "MC",
             "ME",
+            "MF",
             "MQ",
             "MT",
             "NL",
@@ -817,6 +823,9 @@
             "SI",
             "SK",
             "SM",
+            "TF",
+            "VA",
+            "XK",
             "YT"
         ],
         "minor": 2,
@@ -852,7 +861,8 @@
         "alpha3": "FKP",
         "code_num": 238,
         "countries": [
-            "FK"
+            "FK",
+            "GS"
         ],
         "minor": 2,
         "name": "Falkland Islands pound",
@@ -871,7 +881,10 @@
         "alpha3": "GBP",
         "code_num": 826,
         "countries": [
-            "GB"
+            "GB",
+            "GG",
+            "IM",
+            "JE"
         ],
         "minor": 2,
         "name": "Pound sterling",
@@ -1103,7 +1116,8 @@
         "alpha3": "ILS",
         "code_num": 376,
         "countries": [
-            "IL"
+            "IL",
+            "PS"
         ],
         "minor": 2,
         "name": "Israeli new shekel",
@@ -1121,7 +1135,7 @@
             "IM"
         ],
         "minor": 2,
-        "name": "Isle of Man pound also Manx pound",
+        "name": "Isle of Man pound",
         "symbols": [
             "£",
             "pound",
@@ -1229,7 +1243,8 @@
         "alpha3": "JOD",
         "code_num": 400,
         "countries": [
-            "JO"
+            "JO",
+            "PS"
         ],
         "minor": 3,
         "name": "Jordanian dinar",
@@ -1509,6 +1524,7 @@
         "alpha3": "MAD",
         "code_num": 504,
         "countries": [
+            "EH",
             "MA"
         ],
         "minor": 2,
@@ -1602,6 +1618,7 @@
         "alpha3": "MRO",
         "code_num": 478,
         "countries": [
+            "EH",
             "MR"
         ],
         "minor": 1,
@@ -1835,6 +1852,7 @@
             "CK",
             "NU",
             "NZ",
+            "PN",
             "TK"
         ],
         "minor": 2,
@@ -2126,6 +2144,7 @@
         "alpha3": "SEK",
         "code_num": 752,
         "countries": [
+            "AX",
             "SE"
         ],
         "minor": 2,
@@ -2508,18 +2527,26 @@
         "code_num": 840,
         "countries": [
             "AS",
+            "BB",
+            "BM",
+            "BQ",
             "EC",
+            "FM",
             "GU",
             "HT",
+            "IO",
             "MH",
             "MP",
+            "PA",
             "PR",
             "PW",
             "SV",
             "TC",
             "TL",
             "UM",
-            "US"
+            "US",
+            "VG",
+            "VI"
         ],
         "minor": 2,
         "name": "United States dollar",
@@ -2653,6 +2680,7 @@
         "code_num": 950,
         "countries": [
             "CF",
+            "CG",
             "CM",
             "GA",
             "GQ",
@@ -2798,6 +2826,7 @@
         "code_num": 953,
         "countries": [
             "NC",
+            "PF",
             "WF"
         ],
         "minor": 0,
