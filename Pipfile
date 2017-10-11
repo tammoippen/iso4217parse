@@ -4,7 +4,7 @@ verify_ssl = true
 
 [packages]
 
-iso4217parse = {path = ".", editable = true}
+"iso4217parse" = {path = ".", editable = true}
 
 [dev-packages]
 
@@ -14,3 +14,4 @@ pytest = "*"
 "pytest-cov" = "*"
 "pytest-flake8" = "*"
 "python-coveralls" = "*"
+"iso3166" = "*"

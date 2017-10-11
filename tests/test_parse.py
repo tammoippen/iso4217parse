@@ -33,9 +33,10 @@ def test_examples():
         name='Euro',
         symbols=['€', 'euro', 'euros'],
         minor=2,
-        countries=['AD', 'AT', 'BE', 'BL', 'CY', 'DE', 'EE', 'ES', 'FI', 'FR', 'GP', 'GR',
-                   'IE', 'IT', 'LT', 'LU', 'LV', 'MC', 'ME', 'MQ', 'MT', 'NL', 'PM', 'PT',
-                   'RE', 'SI', 'SK', 'SM', 'YT']
+        countries=['AD', 'AT', 'AX', 'BE', 'BL', 'CY', 'DE', 'EE', 'ES', 'FI',
+                   'FR', 'GF', 'GP', 'GR', 'IE', 'IT', 'LT', 'LU', 'LV', 'MC',
+                   'ME', 'MF', 'MQ', 'MT', 'NL', 'PM', 'PT', 'RE', 'SI', 'SK',
+                   'SM', 'TF', 'VA', 'XK', 'YT']
     )
 
     assert [exp] == iso4217.parse('Price is 5 €')

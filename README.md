@@ -56,9 +56,10 @@ Out[3]:
 In [4]: iso4217parse.parse('Price is 5 €')
 Out[4]: [Currency(alpha3='EUR', code_num=978, name='Euro', 
          symbols=['€', 'euro', 'euros'], minor=2, 
-         countries=['AD', 'AT', 'BE', 'BL', 'CY', 'DE', 'EE', 'ES', 'FI', 'FR', 'GP', 'GR', 
-                    'IE', 'IT', 'LT', 'LU', 'LV', 'MC', 'ME', 'MQ', 'MT', 'NL', 'PM', 'PT', 
-                    'RE', 'SI', 'SK', 'SM', 'YT'])]
+         countries=['AD', 'AT', 'AX', 'BE', 'BL', 'CY', 'DE', 'EE', 'ES', 'FI',
+                   'FR', 'GF', 'GP', 'GR', 'IE', 'IT', 'LT', 'LU', 'LV', 'MC',
+                   'ME', 'MF', 'MQ', 'MT', 'NL', 'PM', 'PT', 'RE', 'SI', 'SK',
+                   'SM', 'TF', 'VA', 'XK', 'YT'])]
 
 In [5]: iso4217parse.parse('CA﹩15.76')
 Out[5]: [Currency(alpha3='CAD', code_num=124, name='Canadian dollar', 
@@ -122,7 +123,7 @@ Parameters:
     code_num: int  An iso4217 numeric code.
 
 Returns:
-    Currency: return Currency object for `code_num`, if available.
+    Currency: Currency object for `code_num`, if available.
 ```
 
 **by_country:** Get currencies used in a country:
