@@ -24,7 +24,7 @@ setup(
     url='https://github.com/tammoippen/iso4217parse',
     license='MIT',
     download_url='https://github.com/tammoippen/iso4217parse/archive/v{}.tar.gz'.format(version),
-    keywords=[],
+    keywords=['iso4217', 'currency', 'parse', 'symbol'],
     include_package_data=True,
     classifiers=[
         # Trove classifiers
