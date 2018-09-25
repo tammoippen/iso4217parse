@@ -8,3 +8,7 @@ __pycache__/
 
 # macOS
 .DS_Store
+
+.vscode/
+dist/
+pyproject.lock
