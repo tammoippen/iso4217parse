@@ -63,7 +63,7 @@ def _data():
     global _DATA
     if _DATA is None:
         _DATA = {}
-        with open(resource_filename(__name__, 'data.json'), 'r') as f:
+        with open(resource_filename(__name__, 'data.json'), 'r', encoding='utf-8') as f:
             _DATA['alpha3'] = {k: Currency(**v) for k, v in json.load(f).items()}
 
         _DATA['code_num'] = {d.code_num: d for d in _DATA['alpha3'].values() if d.code_num is not None}
