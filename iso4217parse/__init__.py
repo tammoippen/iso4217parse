@@ -34,6 +34,8 @@ _PY3 = sys.version_info[0] == 3
 
 if _PY3:
     unicode = str
+else:
+    from io import open
 
 
 Currency = namedtuple('Currency', [
