@@ -11,7 +11,7 @@ def test_examples():
         name='Swiss franc',
         symbols=['SFr.', 'fr', 'Fr.', 'F', 'franc', 'francs', 'Franc', 'Francs'],
         minor=2,
-        countries=['CH', 'LI']
+        countries=['CH', 'LI'],
     )
 
     assert [exp] == iso4217.parse('CHF')
@@ -22,7 +22,7 @@ def test_examples():
         name='Cuban peso',
         symbols=['₱', '＄', '﹩', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', '＄MN', '﹩MN', '$MN'],
         minor=2,
-        countries=['CU']
+        countries=['CU'],
     )
 
     assert [exp] == iso4217.parse(192)
@@ -36,7 +36,7 @@ def test_examples():
         countries=['AD', 'AT', 'AX', 'BE', 'BL', 'CY', 'DE', 'EE', 'ES', 'FI',
                    'FR', 'GF', 'GP', 'GR', 'IE', 'IT', 'LT', 'LU', 'LV', 'MC',
                    'ME', 'MF', 'MQ', 'MT', 'NL', 'PM', 'PT', 'RE', 'SI', 'SK',
-                   'SM', 'TF', 'VA', 'XK', 'YT']
+                   'SM', 'TF', 'VA', 'XK', 'YT'],
     )
 
     assert [exp] == iso4217.parse('Price is 5 €')
@@ -47,7 +47,7 @@ def test_examples():
         name='Canadian dollar',
         symbols=['CA$', 'CA＄', '＄', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', 'CA﹩', '﹩'],
         minor=2,
-        countries=['CA']
+        countries=['CA'],
     )
 
     assert [exp] == iso4217.parse('CA﹩15.76')
