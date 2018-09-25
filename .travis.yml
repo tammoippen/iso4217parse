@@ -8,9 +8,14 @@ python:
   - "2.7"
   - "3.5"
   - "3.6"
+  - "3.7-dev"
   - "nightly"
-  - "pypy2.7-5.8.0"
-  - "pypy3.5-5.8.0"
+  - "pypy"
+  - "pypy3.5"
+
+env:
+  global:
+    secure: fYDKFiKFTuYPX7cq2FiqrrtfysmrMlahXglWwDhDQfUcFG3vkZvmvwVFJCjW8wDgg3OCQR4McBaCWbg2Us9OxM0ZveI2BAbAJMfgzIfLM3Kr5yWoPYQ87wIjsr3To4LrsLWIsPSNaXIONfXKN0MhSYHHE1XMf4D+HBv2NqIuJMh3psP1Tl10H81JNcICm9UoX4HADyf5YPtkWWsK/C7st0rjQeBb9d/XwGKsxIGjVGFnQJgyCPLcIQfakIu7394bkEF4us/AaEjmv54/rR1lGWHSR3fRzv6sNobDBbrjAJCKeL7rKBoICOXit/vG51ut3vEx3w62quL16oCiWagCfDOEl8a5YNl+sWihorZJif83gMhL2oSLtyufFtT9ik59H6y/hZK9Q7r6VkLyeDtT1dt0FtoaXcULhZqt79bYRvedcNHP9rUo90reUiSbuNQMZahapBFfXl2OdVqpB892e3qZvMrX/GGdd0YMuKLiobvlK0QeYbTmkYUT0J5bdzD70PoNDj6h69Rlt4ZlMtzFwnYlCP92BzAOy923R8nzyO9HPrTK0IBQ80tACKW4I7B4+tvdenGDdDyc0D8VjNvFbK4QUelNALDYps7+0GLrFpVkZrZI3ezY8dX9ZArKuZOMxlWRI6yzCuNWFw1RZC5Om6xB1aWUlO1DUuA7wbCWFMA=
 
 addons:
   apt:
@@ -18,23 +23,26 @@ addons:
       - pandoc
 
 install:
-  - pip install pipenv
-  - pipenv install --dev
+  - pip install poetry
+  - poetry install --verbose
 
-script: PYTHONPATH=$PWD pipenv run pytest
+script: poetry run pytest
 
 after_success:
   - coveralls
 
 before_deploy:
-  - pip install pypandoc
+  - git stash --all
+  - poetry build -f sdist
 
 deploy:
-  provider: pypi
-  user: tammoippen
-  password:
-    secure: yhDUquO2ro58gIoNew2C8iQYLfcrHJipjuSPwG5rbHfFAoV+PJaYXkIphgqYtYZuua9fjsraAGJZK3lKfYt06f3voI0NVkbzsEK7sNWfAKuFGlMzHEb7NJLNIYNr9hyJ9F5U9oSFUQHQC1rm4IEiNPeiQaK28bk0k9DOOU0YY0LxYDS2V4kBFJAg6atmy73maNrvYLsOPu1GGWYc10rUvVEPkR6DlmFgunGNZyW60l+6TsV8heV4QNoELv3FoL/Reg8+dbKPzN73DC19UtJwc2Q4Hi/n0xfpGrTwei4VNlr68fUWq4/qCMCZPR1iXcPf/ThIeGLfkKvgrvui5VbNnFOWKu4QWk/fbg/LapmnzFtJOVBrS9zCo/8NRUNHTo2tMExTLi1J1ZQ4efwVeOZOpbMJ9HVqoYDcz7E2hvSbWK5uD9g3JhOY+kTLHekFdSc7qpl0bkix6cRhYBtlOl1YuQxpPozD4XZs0u6B91x1PXzHHlWlDlZWHMh/ILsQ3n4nPbyuWNRiDyd/lmwWWoTlKECrX3bo0pngYKVdh/kgNbHmMVWPM4q/hpdwbV8ibWu5ZD3l2c4jruaCUjtJ9Hx7tP0UFesxNr1nJHuXuQwyTl4Z3N8gw15gMqd6rSQs6Am8aR9eT3bdVGoBdEtkppHrVYzHBw/483uz8/Y4lET42GU=
+  provider: script
+  script: poetry publish -u tammoippen -p $PYPI_PASS
+  skip_cleanup: true
   on:
     branch: master
     tags: true
     python: "3.6"
+    condition: $WITH_CYTHON -eq 1
+
+
