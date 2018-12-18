@@ -1,6 +1,6 @@
 # The MIT License
 
-# Copyright (c) 2017 Tammo Ippen, tammo.ippen@posteo.de
+# Copyright (c) 2017 - 2018 Tammo Ippen, tammo.ippen@posteo.de
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -93,7 +93,7 @@ additional_countries = {
 
 # get active table
 active = []
-for row in tables[1].findAll('tr'):
+for row in tables[1].findAll('tr'):  # noqa
     tds = row.findAll('td')
     if tds:
         try:
@@ -178,7 +178,7 @@ if tmp_out:
 
 # ignore historical for now
 historical = []
-for row in tables[5].findAll('tr'):
+for row in tables[5].findAll('tr'):  # noqa
     tds = row.findAll('td')
     if tds:
         code = tds[1].text

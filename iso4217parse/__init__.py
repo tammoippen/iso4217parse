@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 # The MIT License
 
-# Copyright (c) 2017 Tammo Ippen, tammo.ippen@posteo.de
+# Copyright (c) 2017 - 2018 Tammo Ippen, tammo.ippen@posteo.de
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,16 @@ if _PY3:
 else:
     from io import open
 
+
+__all__ = [
+    'Currency',
+    'by_alpha3',
+    'by_code_num',
+    'by_symbol',
+    'by_symbol_match',
+    'by_country',
+    'parse',
+]
 
 Currency = namedtuple('Currency', [
     'alpha3',     # unicode:       the ISO4217 alpha3 code
