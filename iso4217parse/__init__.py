@@ -77,6 +77,12 @@ def _data():
         for s, d in _DATA['symbol'].items():
             _DATA['symbol'][s] = sorted(d, key=lambda d: 10000 if d.code_num is None else d.code_num)
 
+        _DATA['name'] = {}
+        for d in _DATA['alpha3'].values():
+            if d.name in _DATA['name']:
+                assert 'Duplicate name "{}"!'.format(d.name)
+            _DATA['name'][d.name] = d
+
         _DATA['country'] = defaultdict(list)
         for d in _DATA['alpha3'].values():
             for cc in d.countries:
@@ -103,9 +109,12 @@ def _symbols():
     """
     global _SYMBOLS
     if _SYMBOLS is None:
+        tmp = [(s, 'symbol') for s in _data()['symbol'].keys()]
+        tmp += [(s, 'alpha3') for s in _data()['alpha3'].keys()]
+        tmp += [(s.name, 'name') for s in _data()['alpha3'].values()]
         _SYMBOLS = sorted(
-            _data()['symbol'].keys(),
-            key=lambda s: (len(s), ord(s[0])),
+            tmp,
+            key=lambda s: (len(s[0]), ord(s[0][0])),
             reverse=True)
 
     return _SYMBOLS
@@ -167,6 +176,8 @@ def by_symbol_match(value, country_code=None):
     Look for first matching currency symbol in `value`. Filter similar to `by_symbol`.
     Symbols are sorted by length and relevance of first character (see `_symbols()`).
 
+    Symbols are considered to be currency symbols, alpha3 codes or currency names.
+
     Note: This is a [heuristic](https://en.wikipedia.org/wiki/Heuristic) !
 
     Parameters:
@@ -176,9 +187,15 @@ def by_symbol_match(value, country_code=None):
     Returns:
         List[Currency]: Currency objects found in `value`; filter by country_code.
     """
-    for s in _symbols():
-        if s in value:
-            res = by_symbol(s, country_code)
+    res = None
+    for s, group in _symbols():
+        if s.lower() in value.lower():
+            if group == 'symbol':
+                res = by_symbol(s, country_code)
+            if group == 'alpha3':
+                res = [by_alpha3(s)]
+            if group == 'name':
+                res = [_data()['name'][s]]
             if res:
                 return res
 

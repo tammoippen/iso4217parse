@@ -1,7 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import pytest
+
 import iso4217parse as iso4217
+
+
+def test_invalid():
+    for v in (None, [], {}, 3.14):
+        with pytest.raises(ValueError):
+            iso4217.parse(v)
 
 
 def test_examples():
@@ -40,6 +48,10 @@ def test_examples():
     )
 
     assert [exp] == iso4217.parse('Price is 5 €')
+    assert [exp] == iso4217.parse('Price is 5 EUR')
+    assert [exp] == iso4217.parse('Price is 5 eur')
+    assert [exp] == iso4217.parse('Price is 5 euro')
+    assert [exp] == iso4217.parse('Price is 5 Euro')
 
     exp = iso4217.Currency(
         alpha3='CAD',
