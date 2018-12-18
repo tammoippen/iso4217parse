@@ -12,3 +12,7 @@ __pycache__/
 .vscode/
 dist/
 pyproject.lock
+poetry.lock
+cov_html/
+.pytest_cache/
+.hypothesis/
