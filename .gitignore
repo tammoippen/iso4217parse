@@ -17,3 +17,4 @@ cov_html/
 .pytest_cache/
 .hypothesis/
 .venv/
+venv/
