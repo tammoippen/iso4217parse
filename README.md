@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/tammoippen/iso4217parse.svg?branch=master)](https://travis-ci.org/tammoippen/iso4217parse)
+[![CircleCI](https://circleci.com/gh/tammoippen/iso4217parse.svg?style=svg)](https://circleci.com/gh/tammoippen/iso4217parse)
 [![Coverage Status](https://coveralls.io/repos/github/tammoippen/iso4217parse/badge.svg?branch=master)](https://coveralls.io/github/tammoippen/iso4217parse?branch=master)
-[![Tested CPython Versions](https://img.shields.io/badge/cpython-2.7%2C%203.5%2C%203.6%2C%20nightly-brightgreen.svg)](https://img.shields.io/badge/cpython-2.7%2C%203.5%2C%203.6%2C%20nightly-brightgreen.svg)
-[![Tested PyPy Versions](https://img.shields.io/badge/pypy-2.7--5.8.0%2C%203.5--5.8.0-brightgreen.svg)](https://img.shields.io/badge/pypy-2.7--5.8.0%2C%203.5--5.8.0-brightgreen.svg)
+[![Tested CPython Versions](https://img.shields.io/badge/cpython-2.7%2C%203.5%2C%203.6%2C%203.7-brightgreen.svg)](https://img.shields.io/badge/cpython-2.7%2C%203.5%2C%203.6%2C%203.7-brightgreen.svg)
+[![Tested PyPy Versions](https://img.shields.io/badge/pypy-2.7--6.0.0%2C%203.5--6.0.0-brightgreen.svg)](https://img.shields.io/badge/pypy-2.7--6.0.0%2C%203.5--6.0.0-brightgreen.svg)
 [![PyPi version](https://img.shields.io/pypi/v/iso4217parse.svg)](https://pypi.python.org/pypi/iso4217parse)
 [![PyPi license](https://img.shields.io/pypi/l/iso4217parse.svg)](https://pypi.python.org/pypi/iso4217parse)
 
@@ -43,27 +43,27 @@ Currency = namedtuple('Currency', [
 In [1]: import iso4217parse
 
 In [2]: iso4217parse.parse('CHF')
-Out[2]: [Currency(alpha3='CHF', code_num=756, name='Swiss franc', 
+Out[2]: [Currency(alpha3='CHF', code_num=756, name='Swiss franc',
                   symbols=['SFr.', 'fr', 'Fr.', 'F', 'franc', 'francs', 'Franc', 'Francs'],
                   minor=2, countries=['CH', 'LI'])]
 
 In [3]: iso4217parse.parse(192)
 Out[3]:
-[Currency(alpha3='CUP', code_num=192, name='Cuban peso', 
-          symbols=['₱', '＄', '﹩', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', '＄MN', '﹩MN', '$MN'], 
+[Currency(alpha3='CUP', code_num=192, name='Cuban peso',
+          symbols=['₱', '＄', '﹩', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', '＄MN', '﹩MN', '$MN'],
           minor=2, countries=['CU'])]
 
 In [4]: iso4217parse.parse('Price is 5 €')
-Out[4]: [Currency(alpha3='EUR', code_num=978, name='Euro', 
-         symbols=['€', 'euro', 'euros'], minor=2, 
+Out[4]: [Currency(alpha3='EUR', code_num=978, name='Euro',
+         symbols=['€', 'euro', 'euros'], minor=2,
          countries=['AD', 'AT', 'AX', 'BE', 'BL', 'CY', 'DE', 'EE', 'ES', 'FI',
                    'FR', 'GF', 'GP', 'GR', 'IE', 'IT', 'LT', 'LU', 'LV', 'MC',
                    'ME', 'MF', 'MQ', 'MT', 'NL', 'PM', 'PT', 'RE', 'SI', 'SK',
                    'SM', 'TF', 'VA', 'XK', 'YT'])]
 
 In [5]: iso4217parse.parse('CA﹩15.76')
-Out[5]: [Currency(alpha3='CAD', code_num=124, name='Canadian dollar', 
-         symbols=['CA$', 'CA＄', '＄', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', 'CA﹩', '﹩'], 
+Out[5]: [Currency(alpha3='CAD', code_num=124, name='Canadian dollar',
+         symbols=['CA$', 'CA＄', '＄', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', 'CA﹩', '﹩'],
          minor=2, countries=['CA'])]
 
 In [6]: iso4217parse.parse?
@@ -90,7 +90,7 @@ Returns:
 In [1]: import iso4217parse
 
 In [2]: iso4217parse.by_alpha3('CHF')
-Out[2]: Currency(alpha3='CHF', code_num=756, name='Swiss franc', 
+Out[2]: Currency(alpha3='CHF', code_num=756, name='Swiss franc',
                  symbols=['SFr.', 'fr', 'Fr.', 'F', 'franc', 'francs', 'Franc', 'Francs'],
                  minor=2, countries=['CH', 'LI'])
 
@@ -111,7 +111,7 @@ Returns:
 In [1]: import iso4217parse
 
 In [2]: iso4217parse.by_code_num(51)
-Out[2]: Currency(alpha3='AMD', code_num=51, name='Armenian dram', 
+Out[2]: Currency(alpha3='AMD', code_num=51, name='Armenian dram',
                  symbols=['֏', 'դր', 'dram'], minor=2, countries=['AM'])
 
 In [3]: iso4217parse.by_code_num?
@@ -131,13 +131,13 @@ Returns:
 In [1]: import iso4217parse
 
 In [2]: iso4217parse.country('HK')
-Out[2]: 
-[ 
-  Currency(alpha3='HKD', code_num=344, name='Hong Kong dollar', 
-           symbols=['HK$', 'HK＄', '＄', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', 'HK﹩', '﹩', '元'], 
+Out[2]:
+[
+  Currency(alpha3='HKD', code_num=344, name='Hong Kong dollar',
+           symbols=['HK$', 'HK＄', '＄', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', 'HK﹩', '﹩', '元'],
            minor=2, countries=['HK']),
-  Currency(alpha3='CNH', code_num=None, name='Chinese yuan (when traded offshore)', 
-           symbols=['CN¥', '￥', 'CN￥', '¥', 'RMB', '元'], 
+  Currency(alpha3='CNH', code_num=None, name='Chinese yuan (when traded offshore)',
+           symbols=['CN¥', '￥', 'CN￥', '¥', 'RMB', '元'],
            minor=2, countries=['HK'])
 ]
 
@@ -158,10 +158,10 @@ Returns:
 In [1]: import iso4217parse
 
 In [2]: iso4217parse.by_symbol('＄MN')
-Out[2]: 
+Out[2]:
 [
-  Currency(alpha3='CUP', code_num=192, name='Cuban peso', 
-           symbols=['₱', '＄', '﹩', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', '＄MN', '﹩MN', '$MN'], 
+  Currency(alpha3='CUP', code_num=192, name='Cuban peso',
+           symbols=['₱', '＄', '﹩', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', '＄MN', '﹩MN', '$MN'],
            minor=2, countries=['CU'])
 ]
 
@@ -170,17 +170,17 @@ Out[3]: [...] # 35 different currencies
 
 In [4]: [c.alpha3 for c in iso4217parse.by_symbol('＄')]
 Out[4]:
-['ARS', 'AUD', 'BBD', 'BMD', 'BZD', 'SBD', 'BND', 'CAD', 'CVE', 'KYD', 'CLP', 
- 'COP', 'CUP', 'DOP', 'FJD', 'GYD', 'HKD', 'JMD', 'LRD', 'MXN', 'NAD', 'NZD', 
- 'SGD', 'TTD', 'USD', 'UYU', 'TWD', 'CUC', 'ZWL', 'XCD', 'SRD', 'BRL', 'KID', 
+['ARS', 'AUD', 'BBD', 'BMD', 'BZD', 'SBD', 'BND', 'CAD', 'CVE', 'KYD', 'CLP',
+ 'COP', 'CUP', 'DOP', 'FJD', 'GYD', 'HKD', 'JMD', 'LRD', 'MXN', 'NAD', 'NZD',
+ 'SGD', 'TTD', 'USD', 'UYU', 'TWD', 'CUC', 'ZWL', 'XCD', 'SRD', 'BRL', 'KID',
  'NTD', 'TVD']
 
 In [5]: iso4217parse.by_symbol('＄', country_code='US')
-Out[5]: 
+Out[5]:
 [
-  Currency(alpha3='USD', code_num=840, name='United States dollar', 
-           symbols=['US$', '$', '＄', '﹩', 'dollar', 'dollars', 'Dollar', 'Dollars', 'US＄', 'US﹩'], 
-           minor=2, 
+  Currency(alpha3='USD', code_num=840, name='United States dollar',
+           symbols=['US$', '$', '＄', '﹩', 'dollar', 'dollars', 'Dollar', 'Dollars', 'US＄', 'US﹩'],
+           minor=2,
            countries=['AS', 'EC', 'GU', 'HT', 'MH', 'MP', 'PR', 'PW', 'SV', 'TC', 'TL', 'UM', 'US'])
 ]
 
@@ -206,33 +206,33 @@ Returns:
 In [1]: import iso4217parse
 
 In [2]: iso4217parse.by_symbol_match('RD$35.8')
-Out[2]: 
+Out[2]:
 [
-  Currency(alpha3='DOP', code_num=214, name='Dominican peso', 
-           symbols=['RD$', '＄', '﹩', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', 'RD＄', 'RD﹩'], 
+  Currency(alpha3='DOP', code_num=214, name='Dominican peso',
+           symbols=['RD$', '＄', '﹩', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', 'RD＄', 'RD﹩'],
            minor=2, countries=['DO'])
 ]
 
 In [3]: iso4217parse.by_symbol_match('The price is ₨ 35.8 !')
-Out[3]: 
+Out[3]:
 [
-  Currency(alpha3='LKR', code_num=144, name='Sri Lankan rupee', 
-           symbols=['රු', '₨', 'Rs', 'ரூ', 'SLRs', 'rupees', 'rupee'], 
+  Currency(alpha3='LKR', code_num=144, name='Sri Lankan rupee',
+           symbols=['රු', '₨', 'Rs', 'ரூ', 'SLRs', 'rupees', 'rupee'],
            minor=2, countries=['LK']),
-  Currency(alpha3='MUR', code_num=480, name='Mauritian rupee', 
+  Currency(alpha3='MUR', code_num=480, name='Mauritian rupee',
            symbols=['₨', 'rupees', 'rupee'], minor=2, countries=['MU']),
-  Currency(alpha3='NPR', code_num=524, name='Nepalese rupee', 
+  Currency(alpha3='NPR', code_num=524, name='Nepalese rupee',
            symbols=['रु', '₨', 'Rs', 'Re', 'rupees', 'rupee'], minor=2, countries=['NP']),
-  Currency(alpha3='PKR', code_num=586, name='Pakistani rupee', 
-           symbols=['₨', 'Rs', 'rupees', 'rupee'], 
+  Currency(alpha3='PKR', code_num=586, name='Pakistani rupee',
+           symbols=['₨', 'Rs', 'rupees', 'rupee'],
            minor=2, countries=['PK'])
 ]
 
 In [4]: iso4217parse.by_symbol_match('The price is ₨ 35.8 !', country_code='NP')
-Out[4]: 
+Out[4]:
 [
-  Currency(alpha3='NPR', code_num=524, name='Nepalese rupee', 
-           symbols=['रु', '₨', 'Rs', 'Re', 'rupees', 'rupee'], 
+  Currency(alpha3='NPR', code_num=524, name='Nepalese rupee',
+           symbols=['रु', '₨', 'Rs', 'Re', 'rupees', 'rupee'],
            minor=2, countries=['NP'])
 ]
 

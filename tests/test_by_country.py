@@ -2,6 +2,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import iso3166
+
 import iso4217parse
 
 
@@ -18,8 +19,8 @@ def test_all_countries():
         cs = iso4217parse.by_country(country.alpha2)
         if cs is None:
             print(country.alpha2, country)
-        # assert isinstance(cs, list)
-        # assert len(cs) > 0
+        assert isinstance(cs, list)
+        assert len(cs) > 0
 
 
 def test_examples():
