@@ -16,3 +16,4 @@ poetry.lock
 cov_html/
 .pytest_cache/
 .hypothesis/
+.venv/
