@@ -177,7 +177,8 @@ def by_symbol(symbol, country_code=None):
 
         if tmp_res:
             return tmp_res
-        return res
+        if country_code is None:
+            return res
 
 
 def by_symbol_match(value, country_code=None):
@@ -206,6 +207,12 @@ def by_symbol_match(value, country_code=None):
                 res = [by_alpha3(s)]
             if group == 'name':
                 res = [_data()['name'][s]]
+            if res and country_code is not None:
+                res = [
+                    currency
+                    for currency in res
+                    if country_code in currency.countries
+                ]
             if res:
                 return res
 
