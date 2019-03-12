@@ -247,7 +247,8 @@ def parse(v, country_code=None):
         List[Currency]: found Currency objects.
     """
     if isinstance(v, int):
-        return [by_code_num(v)]
+        res = by_code_num(v)
+        return [] if not res else [res]
 
     if not isinstance(v, (str, unicode)):
         raise ValueError('`v` of incorrect type {}. Only accepts str, bytes, unicode and int.')

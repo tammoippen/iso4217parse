@@ -12,29 +12,21 @@ def test_invalid():
             iso4217.parse(v)
 
 
-def test_examples():
-    exp = iso4217.Currency(
-        alpha3='CHF',
-        code_num=756,
-        name='Swiss franc',
-        symbols=['SFr.', 'fr', 'Fr.', 'F', 'franc', 'francs', 'Franc', 'Francs'],
-        minor=2,
-        countries=['CH', 'LI'],
-    )
+def test_examples_code():
+    for code, exp in iso4217._data()['alpha3'].items():
+        assert [exp] == iso4217.parse(code)
 
-    assert [exp] == iso4217.parse('CHF')
 
-    exp = iso4217.Currency(
-        alpha3='CUP',
-        code_num=192,
-        name='Cuban peso',
-        symbols=['₱', '＄', '﹩', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', '＄MN', '﹩MN', '$MN'],
-        minor=2,
-        countries=['CU'],
-    )
+def test_examples_numbers():
+    for num in range(1000):
+        exp = iso4217.by_code_num(num)
+        if exp is None:
+            assert [] == iso4217.parse(num)
+        else:
+            assert [exp] == iso4217.parse(num)
 
-    assert [exp] == iso4217.parse(192)
 
+def test_examples_EUR():
     exp = iso4217.Currency(
         alpha3='EUR',
         code_num=978,
@@ -63,3 +55,9 @@ def test_examples():
     )
 
     assert [exp] == iso4217.parse('CA﹩15.76')
+
+
+def test_examples_CZK():
+    expect = iso4217.by_alpha3('CZK')
+
+    assert [expect] == iso4217.parse('1499 CZK')
