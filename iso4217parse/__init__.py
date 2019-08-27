@@ -119,15 +119,37 @@ def _symbols():
     """
     global _SYMBOLS
     if _SYMBOLS is None:
-        tmp = [(s, 'symbol') for s in _data()['symbol'].keys()]
-        tmp += [(s, 'alpha3') for s in _data()['alpha3'].keys()]
-        tmp += [(s.name, 'name') for s in _data()['alpha3'].values()]
+        tmp = [(s, _build_regex(s), 'symbol') for s in _data()['symbol'].keys()]
+        tmp += [(s, _build_regex(s), 'alpha3') for s in _data()['alpha3'].keys()]
+        tmp += [(s.name, _build_regex(s.name), 'name') for s in _data()['alpha3'].values()]
         _SYMBOLS = sorted(
             tmp,
             key=lambda s: (len(s[0]), ord(s[0][0])),
             reverse=True)
 
     return _SYMBOLS
+
+
+def _build_regex(text):
+    re_compat_str = (text.replace('\\', '\\\\')
+                         .replace('.', '\\.')
+                         .replace('$', '\\$')
+                         .replace('(', '\\(')
+                         .replace(')', '\\)'))
+    return re.compile('''
+          \\b({s})\\b
+        | \\d({s})\\b
+        | \\b({s})\\d
+        | \\s({s})\\s
+        | \\d({s})\\s
+        | \\s({s})\\d
+        | ^({s})\\d
+        | ^({s})\\b
+        | ^({s})\\s
+        | \\d({s})$
+        | \\b({s})$
+        | \\s({s})$
+        '''.format(s=re_compat_str), re.IGNORECASE | re.VERBOSE)
 
 
 def by_alpha3(code):
@@ -199,8 +221,8 @@ def by_symbol_match(value, country_code=None):
         List[Currency]: Currency objects found in `value`; filter by country_code.
     """
     res = None
-    for s, group in _symbols():
-        if s.lower() in value.lower():
+    for s, pattern, group in _symbols():
+        if pattern.search(value):
             if group == 'symbol':
                 res = by_symbol(s, country_code)
             if group == 'alpha3':
