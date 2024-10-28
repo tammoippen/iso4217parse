@@ -37,3 +37,22 @@ def test_by_symbol_match_filters_country_code(
     res = iso4217parse.by_symbol_match(example_string, country_code)
     assert len(res) == 1
     assert res[0].alpha3 == expected
+
+
+@pytest.mark.parametrize(
+    'text, expected_alpha3',
+    (
+        # symbol should be lowercase
+        ('lek', 'ALL'),
+        ('Lek', 'ALL'),
+        ('LEK', 'ALL'),
+        # symbol should be uppercase
+        ('DH', 'ALL'),
+        ('Dh', 'ALL'),
+        ('dh', 'ALL'),
+    ),
+)
+def test_parse_by_symbol_value_is_case_insensitive(text, expected_alpha3):
+    res = iso4217parse.by_symbol_match(text)
+    assert len(res) == 1
+    assert res[0].alpha3 == expected
