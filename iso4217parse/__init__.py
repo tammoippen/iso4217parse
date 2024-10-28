@@ -199,14 +199,18 @@ def by_symbol_match(value, country_code=None):
         List[Currency]: Currency objects found in `value`; filter by country_code.
     """
     res = None
-    for s, group in _symbols():
-        if s.lower() in value.lower():
+    for symbol, group in _symbols():
+        # difference : added a regex
+        symbol_pattern = symbol
+        symbol_pattern = symbol_pattern.replace("$", r"\$")  # $ means endline
+        symbol_pattern = symbol_pattern.replace(".", r"\.")  # . means anything
+        if re.search(rf"(^|\b|\d|\s){symbol_pattern}(\b|\W|\s|$)", value, re.I):
             if group == 'symbol':
-                res = by_symbol(s, country_code)
+                res = by_symbol(symbol, country_code)
             if group == 'alpha3':
-                res = [by_alpha3(s)]
+                res = [by_alpha3(symbol)]
             if group == 'name':
-                res = [_data()['name'][s]]
+                res = [_data()['name'][symbol]]
             if res and country_code is not None:
                 res = [
                     currency
