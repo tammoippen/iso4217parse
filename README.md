@@ -264,10 +264,6 @@ Returns:
     List[Currency]: Currency objects found in `value`; filter by country_code.
 ```
 
-## Contribution
-
-If you want to contribute
-
 ## Data acquisition
 
 Basic ISO4217 currency information is gathered from Wikipedia: [https://en.wikipedia.org/wiki/ISO_4217](https://en.wikipedia.org/wiki/ISO_4217) . The tables are parsed with `gen_data.py` and stored in `iso4217parse/data.json`. This gives information for `alpha3`, `code_num`, `name`, `minor` and `countries`. The currency symbol information is hand gathered from:
@@ -279,7 +275,25 @@ Basic ISO4217 currency information is gathered from Wikipedia: [https://en.wikip
 and stored in `iso4217parse/symbols.json`. Each currency can have multiple currency symbols - the first symbol in the list is the (opinionated) choice
 for the currency.
 
-**Contribution Note**: Possible ways to contribute here:
+## Contribution
+
+If you want to contribute, here are some ways you can help:
 
 - hand check symbols for currency code.
-- automatic generation of the `iso4217parse/symbols.json` file.
+- automatic generation of the `iso4217parse/symbols.json` file
+
+To setup the project for local development, be sure to use [poetry](https://python-poetry.org/) for the installation of the dependencies:
+
+```sh
+# install dependencies
+> poetry install
+
+# perform formatting
+> make fmt
+
+# check style
+> make check
+
+# run tests
+> make test
+```
