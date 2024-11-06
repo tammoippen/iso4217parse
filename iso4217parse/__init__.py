@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 # The MIT License
 
 # Copyright (c) 2017 - 2018 Tammo Ippen, tammo.ippen@posteo.de
@@ -27,15 +24,6 @@ from collections import defaultdict, namedtuple
 import importlib.resources
 import json
 import re
-import sys
-
-
-_PY3 = sys.version_info[0] == 3
-
-if _PY3:
-    unicode = str
-else:
-    from io import open
 
 
 __all__ = [
@@ -256,7 +244,7 @@ def parse(v, country_code=None):
         res = by_code_num(v)
         return [] if not res else [res]
 
-    if not isinstance(v, (str, unicode)):
+    if not isinstance(v, str):
         raise ValueError(
             "`v` of incorrect type {}. Only accepts str, bytes, unicode and int."
         )
