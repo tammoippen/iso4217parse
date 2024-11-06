@@ -43,7 +43,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set Up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -74,6 +74,7 @@ jobs:
 
       - uses: codecov/codecov-action@v4
         with:
-          flags: unittests
+          file: coverage.xml
           name: coverage-${{ matrix.os }}-${{ matrix.python-version }}
+          token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
