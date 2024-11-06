@@ -66,7 +66,7 @@ jobs:
         run: poetry install
 
       - name: Style
-        if: ${{ ! startsWith(matrix.python-version, 'pypy-') }}
+        if: ${{ ! startsWith(matrix.python-version, 'pypy-') && startswith(matrix.os, 'ubuntu') }}
         run: make check
 
       - name: Tests
