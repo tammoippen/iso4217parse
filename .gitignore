@@ -8,7 +8,7 @@ __pycache__/
 
 # macOS
 .DS_Store
-
+.pypy_cache/
 .ruff_cache/
 dist/
 pyproject.lock

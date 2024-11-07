@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import pytest
 
 import iso4217parse as iso4217
@@ -13,7 +10,7 @@ def test_invalid():
 
 
 def test_examples_code():
-    for code, exp in iso4217._data()["alpha3"].items():
+    for code, exp in iso4217._data().alpha3.items():
         assert [exp] == iso4217.parse(code)
 
 

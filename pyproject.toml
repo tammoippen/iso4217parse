@@ -31,10 +31,11 @@ classifiers=[
 [tool.poetry.dependencies]
 python = "^3.9"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 
 coveralls = "*"
-iso3166 = "^2"
-pytest = "^8"
-pytest-cov = "^6"
+iso3166 = "*"
+mypy = "*"
+pytest = "*"
+pytest-cov = "*"
 ruff = "*"

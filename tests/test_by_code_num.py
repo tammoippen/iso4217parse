@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import iso4217parse
 
 
@@ -11,7 +8,7 @@ def test_invalid():
 
 
 def test_all_currencies():
-    for code in iso4217parse._data()["code_num"].keys():
+    for code in iso4217parse._data().code_num.keys():
         assert isinstance(iso4217parse.by_code_num(code), iso4217parse.Currency)
 
 

@@ -7,7 +7,7 @@ fmt:
 check:
 	poetry run ruff format --check .
 	poetry run ruff check .
-	# poetry run mypy src
+	poetry run mypy iso4217parse
 
 test:
 	PYTHONDEVMODE=1 poetry run pytest -vvv -s
