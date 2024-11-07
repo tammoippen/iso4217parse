@@ -1,7 +1,7 @@
-[![CircleCI](https://circleci.com/gh/tammoippen/iso4217parse.svg?style=svg)](https://circleci.com/gh/tammoippen/iso4217parse)
+[![CI](https://github.com/tammoippen/iso4217parse/actions/workflows/CI.yml/badge.svg?branch=master)](https://github.com/tammoippen/iso4217parse/actions/workflows/CI.yml)
 [![Coverage Status](https://coveralls.io/repos/github/tammoippen/iso4217parse/badge.svg?branch=master)](https://coveralls.io/github/tammoippen/iso4217parse?branch=master)
-[![Tested CPython Versions](https://img.shields.io/badge/cpython-2.7%2C%203.5%2C%203.6%2C%203.7-brightgreen.svg)](https://img.shields.io/badge/cpython-2.7%2C%203.5%2C%203.6%2C%203.7-brightgreen.svg)
-[![Tested PyPy Versions](https://img.shields.io/badge/pypy-2.7--6.0.0%2C%203.5--6.0.0-brightgreen.svg)](https://img.shields.io/badge/pypy-2.7--6.0.0%2C%203.5--6.0.0-brightgreen.svg)
+[![Tested CPython Versions](https://img.shields.io/badge/cpython-3.9%2C%203.10%2C%203.11%2C%203.12%2C%203.13-brightgreen.svg)](https://img.shields.io/badge/cpython-3.9%2C%203.10%2C%203.11%2C%203.12%2C%203.13-brightgreen.svg)
+[![Tested PyPy Versions](https://img.shields.io/badge/pypy-3.9%2C%203.10-brightgreen.svg)](https://img.shields.io/badge/pypy-3.9%2C%203.10%2C%203.10-brightgreen.svg)
 [![PyPi version](https://img.shields.io/pypi/v/iso4217parse.svg)](https://pypi.python.org/pypi/iso4217parse)
 [![PyPi license](https://img.shields.io/pypi/l/iso4217parse.svg)](https://pypi.python.org/pypi/iso4217parse)
 
@@ -11,21 +11,25 @@ Parse currencies (symbols and codes) from and to [ISO4217](https://en.wikipedia.
 
 Similar to [iso4217](https://github.com/spoqa/iso4217) package, but
 
- * data is aquired by scraping wikipedia (see [below](#data-aquisition)) - this is repeatable and you stay on the most current data
- * currency symbols are currated by hand - this allows some fuzzy currency matching
- * no download and parsing during install
- * no external dependancies (`enum34`)
+- data is acquired by scraping Wikipedia (see [below](#data-acquisition)) - this is repeatable and you stay on the most current data
+- currency symbols are curated by hand - this allows some fuzzy currency matching
+- no download and parsing during install
+- no external dependencies (`enum34`)
 
-When you want to *reuse* the [*data.json*](https://github.com/tammoippen/iso4217parse/blob/master/iso4217parse/data.json) file for your projects, please leave a attribution note. I licence the file under (CC BY 4.0).
+When you want to _reuse_ the [_data.json_](https://github.com/tammoippen/iso4217parse/blob/master/iso4217parse/data.json) file for your projects, please leave a attribution note. I license the file under (CC BY 4.0).
 
 Install:
-```
+
+```sh
 pip install iso4217parse
 ```
+
+**(If you are required to use python version 2.7 or lower than 3.9, please use version [0.5.1](https://pypi.org/project/iso4217parse/0.5.1/))**
 
 ## Documentation
 
 Each currency is modeled as a `collections.namedtuple`:
+
 ```python
 Currency = namedtuple('Currency', [
     'alpha3',     # unicode:       the ISO4217 alpha3 code
@@ -38,7 +42,8 @@ Currency = namedtuple('Currency', [
 ])
 ```
 
-**parse:**  Try to parse the input in a best effort approach by using `by_alpha3()`, `by_code_num()`, ... functions:
+**parse:** Try to parse the input in a best effort approach by using `by_alpha3()`, `by_code_num()`, ... functions:
+
 ```python
 In [1]: import iso4217parse
 
@@ -86,6 +91,7 @@ Returns:
 ```
 
 **by_alpha3:** Get the currency by its iso4217 alpha3 code:
+
 ```python
 In [1]: import iso4217parse
 
@@ -107,6 +113,7 @@ Returns:
 ```
 
 **by_code_num:** Get the currency by its iso4217 numeric code:
+
 ```python
 In [1]: import iso4217parse
 
@@ -127,6 +134,7 @@ Returns:
 ```
 
 **by_country:** Get currencies used in a country:
+
 ```python
 In [1]: import iso4217parse
 
@@ -154,6 +162,7 @@ Returns:
 ```
 
 **by_symbol:** Get currencies that use the given symbol:
+
 ```python
 In [1]: import iso4217parse
 
@@ -201,7 +210,8 @@ Returns:
     List[Currency]: Currency objects for `symbol`; filter by country_code.
 ```
 
-**by_symbol_match:** Look for currency symbol occurence in input string:
+**by_symbol_match:** Look for currency symbol occurrence in input string:
+
 ```python
 In [1]: import iso4217parse
 
@@ -254,19 +264,36 @@ Returns:
     List[Currency]: Currency objects found in `value`; filter by country_code.
 ```
 
+## Data acquisition
 
-## Data aquisition
+Basic ISO4217 currency information is gathered from Wikipedia: [https://en.wikipedia.org/wiki/ISO_4217](https://en.wikipedia.org/wiki/ISO_4217) . The tables are parsed with `gen_data.py` and stored in `iso4217parse/data.json`. This gives information for `alpha3`, `code_num`, `name`, `minor` and `countries`. The currency symbol information is hand gathered from:
 
-Basic ISO4217 currency information is gathered from wikipedia: https://en.wikipedia.org/wiki/ISO_4217 . The tables are parsed with `gen_data.py` and stored in `iso4217parse/data.json`. This gives information for `alpha3`, `code_num`, `name`, `minor` and `countries`. The currency symbol information is hand gathered from:
-
-* individuel wikipedia pages, i.e. [EUR](https://en.wikipedia.org/wiki/Euro) has a `Denominations` -> `Symbol` section.
-* http://www.iotafinance.com/en/ISO-4217-Currency-Codes.html
-* http://www.xe.com/currency/ , i.e. [GBP](http://www.xe.com/currency/gbp-british-pound) has a `Currency Facts` -> `Symbol` section
+- individual Wikipedia pages, i.e. [EUR](https://en.wikipedia.org/wiki/Euro) has a `Denominations` -> `Symbol` section.
+- [http://www.iotafinance.com/en/ISO-4217-Currency-Codes.html](http://www.iotafinance.com/en/ISO-4217-Currency-Codes.html)
+- [http://www.xe.com/currency/](http://www.xe.com/currency/) , i.e. [GBP](http://www.xe.com/currency/gbp-british-pound) has a `Currency Facts` -> `Symbol` section
 
 and stored in `iso4217parse/symbols.json`. Each currency can have multiple currency symbols - the first symbol in the list is the (opinionated) choice
 for the currency.
 
-**Contribution Note**: Possible ways to contribute here:
+## Contribution
 
-* hand check symbols for currency code.
-* automatic generation of the `iso4217parse/symbols.json` file.
+If you want to contribute, here are some ways you can help:
+
+- hand check symbols for currency code.
+- automatic generation of the `iso4217parse/symbols.json` file
+
+To setup the project for local development, be sure to use [poetry](https://python-poetry.org/) for the installation of the dependencies:
+
+```sh
+# install dependencies
+> poetry install
+
+# perform formatting
+> make fmt
+
+# check style
+> make check
+
+# run tests
+> make test
+```

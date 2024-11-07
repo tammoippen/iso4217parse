@@ -8,12 +8,13 @@ __pycache__/
 
 # macOS
 .DS_Store
-
-.vscode/
+.pypy_cache/
+.ruff_cache/
 dist/
 pyproject.lock
 poetry.lock
 cov_html/
+coverage.xml
 .pytest_cache/
 .hypothesis/
 .venv/
