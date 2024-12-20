@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "iso4217parse"
-version = "0.6.0"
+version = "0.6.1"
 description = "Parse currencies (symbols and codes) from and to ISO4217."
 authors = ["Tammo Ippen <tammo.ippen@posteo.de>"]
 license = "MIT"
@@ -39,3 +39,7 @@ mypy = "*"
 pytest = "*"
 pytest-cov = "*"
 ruff = "*"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
