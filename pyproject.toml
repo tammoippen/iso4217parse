@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "iso4217parse"
-version = "0.6.1"
+version = "0.6.2"
 description = "Parse currencies (symbols and codes) from and to ISO4217."
 authors = ["Tammo Ippen <tammo.ippen@posteo.de>"]
 license = "MIT"
