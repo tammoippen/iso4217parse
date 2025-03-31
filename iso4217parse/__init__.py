@@ -217,7 +217,6 @@ def by_symbol_match(
         List[Currency]: Currency objects found in `value`; filter by country_code.
     """
     res: Optional[list[Currency]] = None
-    print(len(_symbols()))
     for symbol, group in _symbols():
         symbol_pattern = _symbol_pattern(symbol)
         if symbol_pattern.search(value):
