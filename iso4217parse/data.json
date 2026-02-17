@@ -56,22 +56,6 @@
             "dram"
         ]
     },
-    "ANG": {
-        "alpha3": "ANG",
-        "code_num": 532,
-        "countries": [
-            "CW",
-            "SX"
-        ],
-        "minor": 2,
-        "name": "Netherlands Antillean guilder",
-        "symbols": [
-            "ƒ",
-            "NAƒ",
-            "NAf",
-            "f"
-        ]
-    },
     "AOA": {
         "alpha3": "AOA",
         "code_num": 973,
@@ -203,20 +187,6 @@
             "৳"
         ]
     },
-    "BGN": {
-        "alpha3": "BGN",
-        "code_num": 975,
-        "countries": [
-            "BG"
-        ],
-        "minor": 2,
-        "name": "Bulgarian lev",
-        "symbols": [
-            "лв",
-            "лв.",
-            "lev"
-        ]
-    },
     "BHD": {
         "alpha3": "BHD",
         "code_num": 48,
@@ -239,7 +209,11 @@
         "minor": 0,
         "name": "Burundian franc",
         "symbols": [
-            "FBu"
+            "FBu",
+            "franc du burundi",
+            "francs du burundi",
+            "franc burundais",
+            "francs burundais"
         ]
     },
     "BMD": {
@@ -417,7 +391,9 @@
             "Dollar",
             "Dollars",
             "CA﹩",
-            "﹩"
+            "﹩",
+            "dollar canadien",
+            "dollars canadiens"
         ]
     },
     "CDF": {
@@ -436,7 +412,9 @@
             "franc",
             "francs",
             "Franc",
-            "Francs"
+            "Francs",
+            "franc congolais",
+            "francs congolais"
         ]
     },
     "CHE": {
@@ -446,7 +424,7 @@
             "CH"
         ],
         "minor": 2,
-        "name": "WIR Euro (complementary currency)",
+        "name": "WIR euro (complementary currency)",
         "symbols": []
     },
     "CHF": {
@@ -466,7 +444,10 @@
             "franc",
             "francs",
             "Franc",
-            "Francs"
+            "Francs",
+            "franc suisse",
+            "francs suisse",
+            "franc-suisse"
         ]
     },
     "CHW": {
@@ -476,7 +457,7 @@
             "CH"
         ],
         "minor": 2,
-        "name": "WIR Franc (complementary currency)",
+        "name": "WIR franc (complementary currency)",
         "symbols": []
     },
     "CLF": {
@@ -512,40 +493,6 @@
             "CLP﹩"
         ]
     },
-    "CNH": {
-        "alpha3": "CNH",
-        "code_num": null,
-        "countries": [
-            "HK"
-        ],
-        "minor": 2,
-        "name": "Chinese yuan",
-        "symbols": [
-            "CN¥",
-            "￥",
-            "CN￥",
-            "¥",
-            "RMB",
-            "元"
-        ]
-    },
-    "CNT": {
-        "alpha3": "CNT",
-        "code_num": null,
-        "countries": [
-            "TW"
-        ],
-        "minor": 2,
-        "name": "Chinese yuan",
-        "symbols": [
-            "CN¥",
-            "￥",
-            "CN￥",
-            "¥",
-            "RMB",
-            "元"
-        ]
-    },
     "CNY": {
         "alpha3": "CNY",
         "code_num": 156,
@@ -553,7 +500,7 @@
             "CN"
         ],
         "minor": 2,
-        "name": "Chinese yuan",
+        "name": "Renminbi",
         "symbols": [
             "CN¥",
             "￥",
@@ -599,27 +546,6 @@
             "₡"
         ]
     },
-    "CUC": {
-        "alpha3": "CUC",
-        "code_num": 931,
-        "countries": [
-            "CU"
-        ],
-        "minor": 2,
-        "name": "Cuban convertible peso",
-        "symbols": [
-            "CUC$",
-            "＄",
-            "﹩",
-            "$",
-            "dollar",
-            "dollars",
-            "Dollar",
-            "Dollars",
-            "CUC＄",
-            "CUC﹩"
-        ]
-    },
     "CUP": {
         "alpha3": "CUP",
         "code_num": 192,
@@ -648,8 +574,8 @@
         "countries": [
             "CV"
         ],
-        "minor": 0,
-        "name": "Cape Verde escudo",
+        "minor": 2,
+        "name": "Cape Verdean escudo",
         "symbols": [
             "Esc",
             "＄",
@@ -682,7 +608,11 @@
         "minor": 0,
         "name": "Djiboutian franc",
         "symbols": [
-            "Fdj"
+            "Fdj",
+            "Franc Djibouti",
+            "Franc-Djibouti",
+            "Franc de Djibouti",
+            "Francs de Djibouti"
         ]
     },
     "DKK": {
@@ -792,41 +722,11 @@
         "alpha3": "EUR",
         "code_num": 978,
         "countries": [
-            "AD",
-            "AT",
             "AX",
-            "BE",
-            "BL",
-            "CY",
-            "DE",
-            "EE",
-            "ES",
-            "FI",
-            "FR",
             "GF",
-            "GP",
-            "GR",
-            "IE",
-            "IT",
-            "LT",
-            "LU",
-            "LV",
-            "MC",
-            "ME",
             "MF",
-            "MQ",
-            "MT",
-            "NL",
-            "PM",
-            "PT",
-            "RE",
-            "SI",
-            "SK",
-            "SM",
             "TF",
-            "VA",
-            "XK",
-            "YT"
+            "VA"
         ],
         "minor": 2,
         "name": "Euro",
@@ -914,23 +814,6 @@
             "lari"
         ]
     },
-    "GGP": {
-        "alpha3": "GGP",
-        "code_num": null,
-        "countries": [
-            "GG"
-        ],
-        "minor": 2,
-        "name": "Guernsey pound",
-        "symbols": [
-            "£",
-            "pound",
-            "pounds",
-            "Pound",
-            "Pounds",
-            "￡"
-        ]
-    },
     "GHS": {
         "alpha3": "GHS",
         "code_num": 936,
@@ -988,7 +871,9 @@
             "fr",
             "Fr",
             "Fr.",
-            "GFr."
+            "GFr.",
+            "Franc guinéen",
+            "Francs guinéens"
         ]
     },
     "GTQ": {
@@ -1061,18 +946,6 @@
             "L"
         ]
     },
-    "HRK": {
-        "alpha3": "HRK",
-        "code_num": 191,
-        "countries": [
-            "HR"
-        ],
-        "minor": 2,
-        "name": "Croatian kuna",
-        "symbols": [
-            "kn"
-        ]
-    },
     "HTG": {
         "alpha3": "HTG",
         "code_num": 332,
@@ -1128,23 +1001,6 @@
             "ش.ج"
         ]
     },
-    "IMP": {
-        "alpha3": "IMP",
-        "code_num": null,
-        "countries": [
-            "IM"
-        ],
-        "minor": 2,
-        "name": "Isle of Man pound",
-        "symbols": [
-            "£",
-            "pound",
-            "pounds",
-            "Pound",
-            "Pounds",
-            "￡"
-        ]
-    },
     "INR": {
         "alpha3": "INR",
         "code_num": 356,
@@ -1155,7 +1011,7 @@
         "minor": 2,
         "name": "Indian rupee",
         "symbols": [
-            "₹","Rupee","Rupees"
+            "₹"
         ]
     },
     "IQD": {
@@ -1199,23 +1055,6 @@
             "Íkr",
             "kall",
             "krónur"
-        ]
-    },
-    "JEP": {
-        "alpha3": "JEP",
-        "code_num": null,
-        "countries": [
-            "JE"
-        ],
-        "minor": 2,
-        "name": "Jersey pound",
-        "symbols": [
-            "£",
-            "pound",
-            "pounds",
-            "Pound",
-            "Pounds",
-            "￡"
         ]
     },
     "JMD": {
@@ -1313,24 +1152,6 @@
             "riels"
         ]
     },
-    "KID": {
-        "alpha3": "KID",
-        "code_num": null,
-        "countries": [
-            "KI"
-        ],
-        "minor": 2,
-        "name": "Kiribati dollar",
-        "symbols": [
-            "$",
-            "＄",
-            "﹩",
-            "dollar",
-            "dollars",
-            "Dollar",
-            "Dollars"
-        ]
-    },
     "KMF": {
         "alpha3": "KMF",
         "code_num": 174,
@@ -1345,7 +1166,9 @@
             "francs",
             "Franc",
             "Francs",
-            "F"
+            "F",
+            "franc comorien",
+            "francs comoriens"
         ]
     },
     "KPW": {
@@ -1554,7 +1377,7 @@
         "countries": [
             "MG"
         ],
-        "minor": 1,
+        "minor": 0,
         "name": "Malagasy ariary",
         "symbols": [
             "Ar"
@@ -1614,19 +1437,15 @@
             "MOP﹩"
         ]
     },
-    "MRO": {
-        "alpha3": "MRO",
-        "code_num": 478,
+    "MRU": {
+        "alpha3": "MRU",
+        "code_num": 929,
         "countries": [
-            "EH",
             "MR"
         ],
-        "minor": 1,
+        "minor": 0,
         "name": "Mauritanian ouguiya",
-        "symbols": [
-            "UM",
-            "ouguiya"
-        ]
+        "symbols": []
     },
     "MUR": {
         "alpha3": "MUR",
@@ -1777,29 +1596,12 @@
             "C﹩"
         ]
     },
-    "NIS": {
-        "alpha3": "NIS",
-        "code_num": null,
-        "countries": [
-            "IL"
-        ],
-        "minor": 2,
-        "name": "New Israeli Shekel",
-        "symbols": [
-            "₪",
-            "shekel",
-            "shekels",
-            "ש\"ח",
-            "ش.ج"
-        ]
-    },
     "NOK": {
         "alpha3": "NOK",
         "code_num": 578,
         "countries": [
             "BV",
-            "NO",
-            "SJ"
+            "NO"
         ],
         "minor": 2,
         "name": "Norwegian krone",
@@ -1822,27 +1624,6 @@
             "Re",
             "rupees",
             "rupee"
-        ]
-    },
-    "NTD": {
-        "alpha3": "NTD",
-        "code_num": null,
-        "countries": [
-            "TW"
-        ],
-        "minor": 2,
-        "name": "New Taiwan Dollar",
-        "symbols": [
-            "NT$",
-            "NT＄",
-            "NT﹩",
-            "＄",
-            "﹩",
-            "$",
-            "dollar",
-            "dollars",
-            "Dollar",
-            "Dollars"
         ]
     },
     "NZD": {
@@ -1905,7 +1686,7 @@
             "PE"
         ],
         "minor": 2,
-        "name": "Peruvian Sol",
+        "name": "Peruvian sol",
         "symbols": [
             "S/",
             "S/.",
@@ -1963,21 +1744,6 @@
         "name": "Polish złoty",
         "symbols": [
             "zł"
-        ]
-    },
-    "PRB": {
-        "alpha3": "PRB",
-        "code_num": null,
-        "countries": [
-            "MD"
-        ],
-        "minor": 2,
-        "name": "Transnistrian ruble",
-        "symbols": [
-            "rubles",
-            "ruble",
-            "руб/р",
-            "ПМР"
         ]
     },
     "PYG": {
@@ -2068,7 +1834,9 @@
             "francs",
             "Franc",
             "Francs",
-            "F"
+            "F",
+            "franc rwandais",
+            "francs rwandais"
         ]
     },
     "SAR": {
@@ -2148,7 +1916,7 @@
             "SE"
         ],
         "minor": 2,
-        "name": "Swedish krona/kronor",
+        "name": "Swedish krona",
         "symbols": [
             "kr"
         ]
@@ -2191,35 +1959,15 @@
             "￡"
         ]
     },
-    "SLL": {
-        "alpha3": "SLL",
-        "code_num": 694,
+    "SLE": {
+        "alpha3": "SLE",
+        "code_num": 925,
         "countries": [
             "SL"
         ],
         "minor": 2,
-        "name": "Sierra Leonean leone",
-        "symbols": [
-            "Le",
-            "leone",
-            "leones"
-        ]
-    },
-    "SLS": {
-        "alpha3": "SLS",
-        "code_num": null,
-        "countries": [
-            "SO"
-        ],
-        "minor": 2,
-        "name": "Somaliland shilling",
-        "symbols": [
-            "Sl.Sh.",
-            "shilling",
-            "shillings",
-            "Shilling",
-            "Shillings"
-        ]
+        "name": "Sierra Leonean leone (new leone)",
+        "symbols": []
     },
     "SOS": {
         "alpha3": "SOS",
@@ -2228,7 +1976,7 @@
             "SO"
         ],
         "minor": 2,
-        "name": "Somali shilling",
+        "name": "Somalian shilling",
         "symbols": [
             "Sh.So.",
             "S",
@@ -2273,19 +2021,13 @@
             "￡"
         ]
     },
-    "STD": {
-        "alpha3": "STD",
-        "code_num": 678,
-        "countries": [
-            "ST"
-        ],
+    "STN": {
+        "alpha3": "STN",
+        "code_num": 930,
+        "countries": [],
         "minor": 2,
         "name": "São Tomé and Príncipe dobra",
-        "symbols": [
-            "Db",
-            "dobra",
-            "dobras"
-        ]
+        "symbols": []
     },
     "SVC": {
         "alpha3": "SVC",
@@ -2405,9 +2147,7 @@
     "TRY": {
         "alpha3": "TRY",
         "code_num": 949,
-        "countries": [
-            "TR"
-        ],
+        "countries": [],
         "minor": 2,
         "name": "Turkish lira",
         "symbols": [
@@ -2430,30 +2170,6 @@
             "＄",
             "﹩",
             "$",
-            "dollar",
-            "dollars",
-            "Dollar",
-            "Dollars"
-        ]
-    },
-    "TVD": {
-        "alpha3": "TVD",
-        "code_num": null,
-        "countries": [
-            "TV"
-        ],
-        "minor": 2,
-        "name": "Tuvalu dollar",
-        "symbols": [
-            "TV$",
-            "$T",
-            "TV＄",
-            "＄T",
-            "TV﹩",
-            "﹩T",
-            "$",
-            "＄",
-            "﹩",
             "dollar",
             "dollars",
             "Dollar",
@@ -2527,13 +2243,9 @@
         "code_num": 840,
         "countries": [
             "AS",
-            "BB",
-            "BM",
-            "BQ",
             "EC",
             "FM",
             "GU",
-            "HT",
             "IO",
             "MH",
             "MP",
@@ -2566,9 +2278,7 @@
     "USN": {
         "alpha3": "USN",
         "code_num": 997,
-        "countries": [
-            "US"
-        ],
+        "countries": [],
         "minor": 2,
         "name": "United States dollar (next day) (funds code)",
         "symbols": []
@@ -2604,6 +2314,16 @@
             "Dollars"
         ]
     },
+    "UYW": {
+        "alpha3": "UYW",
+        "code_num": 927,
+        "countries": [
+            "UY"
+        ],
+        "minor": 4,
+        "name": "Unidad previsional",
+        "symbols": []
+    },
     "UZS": {
         "alpha3": "UZS",
         "code_num": 860,
@@ -2611,25 +2331,32 @@
             "UZ"
         ],
         "minor": 2,
-        "name": "Uzbekistan som",
+        "name": "Uzbekistani sum",
         "symbols": [
             "so'm",
             "сўм",
             "лв"
         ]
     },
-    "VEF": {
-        "alpha3": "VEF",
-        "code_num": 937,
+    "VED": {
+        "alpha3": "VED",
+        "code_num": 926,
         "countries": [
             "VE"
         ],
         "minor": 2,
-        "name": "Venezuelan bolívar",
-        "symbols": [
-            "Bs.F.",
-            "Bs."
-        ]
+        "name": "Venezuelan digital bolívar",
+        "symbols": []
+    },
+    "VES": {
+        "alpha3": "VES",
+        "code_num": 928,
+        "countries": [
+            "VE"
+        ],
+        "minor": 2,
+        "name": "Venezuelan sovereign bolívar",
+        "symbols": []
     },
     "VND": {
         "alpha3": "VND",
@@ -2675,6 +2402,14 @@
             "SAT"
         ]
     },
+    "XAD": {
+        "alpha3": "XAD",
+        "code_num": 396,
+        "countries": [],
+        "minor": 2,
+        "name": "Arab Accounting Dinar",
+        "symbols": []
+    },
     "XAF": {
         "alpha3": "XAF",
         "code_num": 950,
@@ -2694,7 +2429,9 @@
             "francs",
             "Franc",
             "Francs",
-            "F"
+            "F",
+            "Franc CFA",
+            "Francs CFA"
         ]
     },
     "XAG": {
@@ -2777,6 +2514,17 @@
             "Dollars"
         ]
     },
+    "XCG": {
+        "alpha3": "XCG",
+        "code_num": 532,
+        "countries": [
+            "CW",
+            "SX"
+        ],
+        "minor": 2,
+        "name": "Caribbean guilder",
+        "symbols": []
+    },
     "XDR": {
         "alpha3": "XDR",
         "code_num": 960,
@@ -2793,7 +2541,6 @@
         "countries": [
             "BF",
             "BJ",
-            "CI",
             "GW",
             "ML",
             "NE",
@@ -2808,7 +2555,9 @@
             "francs",
             "Franc",
             "Francs",
-            "F"
+            "F",
+            "Franc CFA",
+            "Francs CFA"
         ]
     },
     "XPD": {
@@ -2826,7 +2575,6 @@
         "code_num": 953,
         "countries": [
             "NC",
-            "PF",
             "WF"
         ],
         "minor": 0,
@@ -2838,7 +2586,12 @@
             "francs",
             "Franc",
             "Francs",
-            "F"
+            "F",
+            "Franc Pacifique",
+            "Franc-Pacifique",
+            "Francs Pacifique",
+            "franc des collectivités françaises du Pacifique",
+            "franc CFP"
         ]
     },
     "XPT": {
@@ -2866,7 +2619,7 @@
         "code_num": 963,
         "countries": [],
         "minor": 0,
-        "name": "Code reserved for testing purposes",
+        "name": "Code reserved for testing",
         "symbols": []
     },
     "XUA": {
@@ -2905,6 +2658,9 @@
         "alpha3": "ZAR",
         "code_num": 710,
         "countries": [
+            "LS",
+            "NA",
+            "SZ",
             "ZA"
         ],
         "minor": 2,
@@ -2927,25 +2683,14 @@
             "kwacha"
         ]
     },
-    "ZWL": {
-        "alpha3": "ZWL",
-        "code_num": 932,
+    "ZWG": {
+        "alpha3": "ZWG",
+        "code_num": 924,
         "countries": [
             "ZW"
         ],
         "minor": 2,
-        "name": "Zimbabwean dollar A/10",
-        "symbols": [
-            "Z$",
-            "Z＄",
-            "Z﹩",
-            "＄",
-            "﹩",
-            "$",
-            "dollar",
-            "dollars",
-            "Dollar",
-            "Dollars"
-        ]
+        "name": "Zimbabwe Gold",
+        "symbols": []
     }
 }

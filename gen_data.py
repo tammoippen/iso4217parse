@@ -33,12 +33,18 @@ import re
 import sys
 
 from bs4 import BeautifulSoup
-from dateparser import parse
 import iso3166
 import requests
 
 # symbols see subsequent pages and http://www.xe.com/currency/
-res = requests.get("https://en.wikipedia.org/wiki/ISO_4217")
+res = requests.get(
+    "https://en.wikipedia.org/wiki/ISO_4217",
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                      "AppleWebKit/537.36 (KHTML, like Gecko) "
+                      "Chrome/117.0 Safari/537.36"
+    }
+)
 soup = BeautifulSoup(res.content, "lxml")
 
 tables = soup.findAll("table")
@@ -150,97 +156,6 @@ if tmp_out:
         json.dump(active, f, indent=4, sort_keys=True, ensure_ascii=False)
 
 
-# get unofficials table
-unofficial = []
-for row in tables[2].findAll("tr"):
-    tds = row.findAll("td")
-    if tds:
-        try:
-            minor = int(re.sub(r"\[[0-9]+\]", r"", tds[2].text.replace("*", "")))
-        except:  # noqa: E722
-            minor = 0
-        d = dict(
-            code=tds[0].text,
-            minor=minor,
-            name=re.sub(r"\[[0-9]+\]", r"", tds[3].find("a").text).strip(),
-            countries=[a.text.strip() for a in tds[4].findAll("a")],
-        )
-        d["countries"] = [re.sub(r"\([^)]+\)", r"", c) for c in d["countries"]]
-        d["countries"] = [re.sub(r"\[[0-9]+\]", r"", c).strip() for c in d["countries"]]
-        d["countries"] = [c for c in d["countries"] if c]
-
-        ccodes = []
-        for c in d["countries"]:
-            if c in alt_iso3166:
-                ccodes += [alt_iso3166[c]]
-            m = re.match(r".*\(([A-Z]{2})\).*", c)
-            if m:
-                ccodes += [m.group(1)]
-            else:
-                code = iso3166.countries.get(c, None)
-                if code:
-                    ccodes += [code.alpha2]
-        d["code"] = re.sub(r"\[[0-9]+\]", r"", d["code"])
-        d["country_codes"] = sorted(set(ccodes))
-        unofficial += [d]
-
-if tmp_out:
-    with open(f"{p}/unofficial.json", "w") as f:
-        json.dump(unofficial, f, indent=4, sort_keys=True, ensure_ascii=False)
-
-
-# ignore historical for now
-historical = []
-for row in tables[5].findAll("tr"):  # noqa
-    tds = row.findAll("td")
-    if tds:
-        code = tds[1].text
-        if code.isnumeric():
-            code = int(code)
-        try:
-            minor = int(re.sub(r"\[[0-9]+\]", r"", tds[2].text.replace("*", "")))
-        except:  # noqa: E722
-            minor = 0
-
-        from_ = re.sub(r"\[[0-9]+\]", r"", tds[4].text).strip()
-        try:
-            from_ = parse(from_).year
-        except:  # noqa: E722
-            if from_ == "?":
-                from_ = None
-
-        until = re.sub(r"\[[0-9]+\]", r"", tds[5].text).strip()
-        try:
-            until = parse(until).year
-        except:  # noqa: E722
-            if until == "?":
-                until = None
-
-        replace = tds[6].text.strip().split()
-        if len(replace) == 1:
-            direct_replace = replace[0].split("/")
-            valid_replace = replace[0].split("/")
-        elif len(replace) == 2:
-            direct_replace = replace[0].split("/")
-            valid_replace = replace[1].replace("(", "").replace(")", "").split("/")
-
-        historical += [
-            dict(
-                code=tds[0].text,
-                code_num=None if code == "..." else code,
-                minor=minor,
-                name=re.sub(r"\[[0-9]+\]", r"", tds[3].text).strip(),
-                from_=from_,
-                until=until,
-                direct_replaced=direct_replace,
-                valid_replaced=valid_replace,
-            )
-        ]
-
-if tmp_out:
-    with open(f"{p}/historical.json", "w") as f:
-        json.dump(historical, f, indent=4, sort_keys=True, ensure_ascii=False)
-
 
 with open("{}/symbols.json".format(p), "r") as f:
     symbols = json.load(f)
@@ -251,16 +166,6 @@ for d in active:
         name=d["name"],
         alpha3=d["code"],
         code_num=d["code_num"],
-        countries=d["country_codes"],
-        minor=d["minor"],
-        symbols=symbols.get(d["code"], []),
-    )
-
-for d in unofficial:
-    data[d["code"]] = dict(
-        name=d["name"],
-        alpha3=d["code"],
-        code_num=None,  # d['code_num'],
         countries=d["country_codes"],
         minor=d["minor"],
         symbols=symbols.get(d["code"], []),
