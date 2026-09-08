@@ -1,7 +1,7 @@
 [![CI](https://github.com/tammoippen/iso4217parse/actions/workflows/CI.yml/badge.svg?branch=master)](https://github.com/tammoippen/iso4217parse/actions/workflows/CI.yml)
 [![Coverage Status](https://coveralls.io/repos/github/tammoippen/iso4217parse/badge.svg?branch=master)](https://coveralls.io/github/tammoippen/iso4217parse?branch=master)
-[![Tested CPython Versions](https://img.shields.io/badge/cpython-3.9%2C%203.10%2C%203.11%2C%203.12%2C%203.13-brightgreen.svg)](https://img.shields.io/badge/cpython-3.9%2C%203.10%2C%203.11%2C%203.12%2C%203.13-brightgreen.svg)
-[![Tested PyPy Versions](https://img.shields.io/badge/pypy-3.9%2C%203.10-brightgreen.svg)](https://img.shields.io/badge/pypy-3.9%2C%203.10%2C%203.10-brightgreen.svg)
+[![Tested CPython Versions](https://img.shields.io/badge/cpython-3.11%2C%203.12%2C%203.13%2C%203.14-brightgreen.svg)](https://img.shields.io/badge/cpython-3.11%2C%203.12%2C%203.13%2C%203.14-brightgreen.svg)
+[![Tested PyPy Versions](https://img.shields.io/badge/pypy-3.11-brightgreen.svg)](https://img.shields.io/badge/pypy-3.11-brightgreen.svg)
 [![PyPi version](https://img.shields.io/pypi/v/iso4217parse.svg)](https://pypi.python.org/pypi/iso4217parse)
 [![PyPi license](https://img.shields.io/pypi/l/iso4217parse.svg)](https://pypi.python.org/pypi/iso4217parse)
 
@@ -28,21 +28,22 @@ pip install iso4217parse
 
 ## Documentation
 
-Each currency is modeled as a `collections.namedtuple`:
+Each currency is modeled as a `typing.NamedTuple`:
 
 ```python
-Currency = namedtuple(
-    "Currency",
-    [
-        "alpha3",  # unicode:       the ISO4217 alpha3 code
-        "code_num",  # int:           the ISO4217 numeric code
-        "name",  # unicode:       the currency name
-        "symbols",  # List[unicode]: list of possible symbols;
-        #                first is opinionated choice for representation
-        "minor",  # int:           number of decimal digits to round
-        "countries",  # List[unicode]: list of countries that use this currency.
-    ],
-)
+class Currency(NamedTuple):
+    alpha3: str
+    "the ISO4217 alpha3 code"
+    code_num: int
+    "the ISO4217 numeric code"
+    name: str
+    "the currency name"
+    symbols: list[str]
+    "list of possible symbols; first is opinionated choice for representation"
+    minor: int
+    "number of decimal digits to round"
+    countries: list[str]
+    "list of countries that use this currency"
 ```
 
 **parse:** Try to parse the input in a best effort approach by using `by_alpha3()`, `by_code_num()`, ... functions:

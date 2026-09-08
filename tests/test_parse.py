@@ -5,7 +5,7 @@ import iso4217parse as iso4217
 
 def test_invalid():
     for v in (None, [], {}, 3.14):
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             iso4217.parse(v)
 
 

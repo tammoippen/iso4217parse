@@ -23,10 +23,10 @@
 import importlib.resources
 import json
 import re
-from collections import defaultdict, namedtuple
+from collections import defaultdict
 from dataclasses import dataclass
 from functools import lru_cache
-from typing import Optional
+from typing import NamedTuple
 
 __all__ = [
     "Currency",
@@ -38,26 +38,28 @@ __all__ = [
     "parse",
 ]
 
-Currency = namedtuple(
-    "Currency",
-    [
-        "alpha3",  # unicode:       the ISO4217 alpha3 code
-        "code_num",  # int:           the ISO4217 numeric code
-        "name",  # unicode:       the currency name
-        "symbols",  # List[unicode]: list of possible symbols;
-        #                first is opinionated choice for representation
-        "minor",  # int:           number of decimal digits to round
-        "countries",  # List[unicode]: list of countries that use this currency.
-    ],
-)
+
+class Currency(NamedTuple):
+    alpha3: str
+    "the ISO4217 alpha3 code"
+    code_num: int
+    "the ISO4217 numeric code"
+    name: str
+    "the currency name"
+    symbols: list[str]
+    "list of possible symbols; first is opinionated choice for representation"
+    minor: int
+    "number of decimal digits to round"
+    countries: list[str]
+    "list of countries that use this currency"
 
 
 @dataclass
 class Data:
     alpha3: dict[str, Currency]
-    code_num: dict[str, Currency]
+    code_num: dict[int, Currency]
     symbol: dict[str, list[Currency]]
-    name: dict[str, Currency]
+    name: dict[str, list[Currency]]
     country: dict[str, list[Currency]]
 
 
@@ -90,11 +92,11 @@ def _data() -> Data:
                 ds, key=lambda d: 10000 if d.code_num is None else d.code_num
             )
 
-        name = {}
+        name: dict[str, list[Currency]] = defaultdict(list)
         for d in alpha3.values():
             if d.name in name:
-                assert f'Duplicate name "{d.name}"!'
-            name[d.name] = d
+                print(f'Duplicate name "{d.name}"!')
+            name[d.name] += [d]
 
         country: dict[str, list[Currency]] = defaultdict(list)
         for d in alpha3.values():
@@ -128,9 +130,9 @@ def _symbols() -> list[tuple[str, str]]:
     """
     global _SYMBOLS
     if _SYMBOLS is None:
-        tmp = [(s, "symbol") for s in _data().symbol.keys()]
-        tmp += [(s, "alpha3") for s in _data().alpha3.keys()]
-        tmp += [(s, "name") for s in _data().name.keys()]
+        tmp = [(s, "symbol") for s in _data().symbol]
+        tmp += [(s, "alpha3") for s in _data().alpha3]
+        tmp += [(s, "name") for s in _data().name]
         _SYMBOLS = sorted(tmp, key=lambda s: (len(s[0]), ord(s[0][0])), reverse=True)
 
     return _SYMBOLS
@@ -148,7 +150,7 @@ def by_alpha3(code: str) -> Currency | None:
     return _data().alpha3.get(code)
 
 
-def by_code_num(code_num: str) -> Currency | None:
+def by_code_num(code_num: int) -> Currency | None:
     """Get Currency for ISO4217 numeric code
 
     Parameters:
@@ -160,9 +162,7 @@ def by_code_num(code_num: str) -> Currency | None:
     return _data().code_num.get(code_num)
 
 
-def by_symbol(
-    symbol: str, country_code: str | None = None
-) -> list[Currency] | None:
+def by_symbol(symbol: str, country_code: str | None = None) -> list[Currency] | None:
     """Get list of possible currencies for symbol; filter by country_code
 
     Look for all currencies that use the `symbol`. If there are currencies used
@@ -222,13 +222,13 @@ def by_symbol_match(
             if group == "symbol":
                 res = by_symbol(symbol, country_code)
             if group == "alpha3":
-                curr = by_alpha3(symbol)
-                assert curr is not None
-                res = [curr]
+                curr_alpha3 = by_alpha3(symbol)
+                assert curr_alpha3 is not None
+                res = [curr_alpha3]
             if group == "name":
-                curr = _data().name[symbol]
-                assert curr is not None
-                res = [curr]
+                curr_name = _data().name[symbol]
+                assert curr_name is not None
+                res = curr_name
             if res and country_code is not None:
                 res = [
                     currency for currency in res if country_code in currency.countries
@@ -273,7 +273,7 @@ def parse(v: str, country_code: str | None = None) -> list[Currency] | None:
         return [] if not res else [res]
 
     if not isinstance(v, str):
-        raise ValueError(
+        raise TypeError(
             "`v` of incorrect type {}. Only accepts str, bytes, unicode and int."
         )
 

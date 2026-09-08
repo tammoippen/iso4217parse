@@ -107,13 +107,13 @@ for row in tables[1].findAll("tr"):
             minor = int(re.sub(r"\[[0-9]+\]", r"", tds[2].text.replace("*", "")))
         except:  # noqa: E722
             minor = 0
-        d = dict(
-            code=tds[0].text,
-            code_num=int(tds[1].text),
-            minor=minor,
-            name=re.sub(r"\[[0-9]+\]", r"", tds[3].text).strip(),
-            countries=tds[4].text.replace("\xa0", ""),
-        )
+        d = {
+            "code": tds[0].text,
+            "code_num": int(tds[1].text),
+            "minor": minor,
+            "name": re.sub(r"\[[0-9]+\]", r"", tds[3].text).strip(),
+            "countries": tds[4].text.replace("\xa0", ""),
+        }
 
         d["countries"] = re.sub(r"\([^)]+\)", r" ", d["countries"])
         d["countries"] = re.sub(r"\[[0-9]+\]", r" ", d["countries"]).strip()
@@ -159,12 +159,12 @@ for row in tables[2].findAll("tr"):
             minor = int(re.sub(r"\[[0-9]+\]", r"", tds[2].text.replace("*", "")))
         except:  # noqa: E722
             minor = 0
-        d = dict(
-            code=tds[0].text,
-            minor=minor,
-            name=re.sub(r"\[[0-9]+\]", r"", tds[3].find("a").text).strip(),
-            countries=[a.text.strip() for a in tds[4].findAll("a")],
-        )
+        d = {
+            "code": tds[0].text,
+            "minor": minor,
+            "name": re.sub(r"\[[0-9]+\]", r"", tds[3].find("a").text).strip(),
+            "countries": [a.text.strip() for a in tds[4].findAll("a")],
+        }
         d["countries"] = [re.sub(r"\([^)]+\)", r"", c) for c in d["countries"]]
         d["countries"] = [re.sub(r"\[[0-9]+\]", r"", c).strip() for c in d["countries"]]
         d["countries"] = [c for c in d["countries"] if c]
@@ -225,16 +225,16 @@ for row in tables[5].findAll("tr"):
             valid_replace = replace[1].replace("(", "").replace(")", "").split("/")
 
         historical += [
-            dict(
-                code=tds[0].text,
-                code_num=None if code == "..." else code,
-                minor=minor,
-                name=re.sub(r"\[[0-9]+\]", r"", tds[3].text).strip(),
-                from_=from_,
-                until=until,
-                direct_replaced=direct_replace,
-                valid_replaced=valid_replace,
-            )
+            {
+                "code": tds[0].text,
+                "code_num": None if code == "..." else code,
+                "minor": minor,
+                "name": re.sub(r"\[[0-9]+\]", r"", tds[3].text).strip(),
+                "from_": from_,
+                "until": until,
+                "direct_replaced": direct_replace,
+                "valid_replaced": valid_replace,
+            }
         ]
 
 if tmp_out:
@@ -245,26 +245,26 @@ if tmp_out:
 with open(f"{p}/symbols.json", "r") as f:
     symbols = json.load(f)
 
-data = dict()
+data = {}
 for d in active:
-    data[d["code"]] = dict(
-        name=d["name"],
-        alpha3=d["code"],
-        code_num=d["code_num"],
-        countries=d["country_codes"],
-        minor=d["minor"],
-        symbols=symbols.get(d["code"], []),
-    )
+    data[d["code"]] = {
+        "name": d["name"],
+        "alpha3": d["code"],
+        "code_num": d["code_num"],
+        "countries": d["country_codes"],
+        "minor": d["minor"],
+        "symbols": symbols.get(d["code"], []),
+    }
 
 for d in unofficial:
-    data[d["code"]] = dict(
-        name=d["name"],
-        alpha3=d["code"],
-        code_num=None,  # d['code_num'],
-        countries=d["country_codes"],
-        minor=d["minor"],
-        symbols=symbols.get(d["code"], []),
-    )
+    data[d["code"]] = {
+        "name": d["name"],
+        "alpha3": d["code"],
+        "code_num": None,  # d['code_num'],
+        "countries": d["country_codes"],
+        "minor": d["minor"],
+        "symbols": symbols.get(d["code"], []),
+    }
 
 
 with open(f"{p}/data.json", "w") as f:

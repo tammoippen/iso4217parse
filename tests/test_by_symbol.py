@@ -26,7 +26,9 @@ def test_symbol_match_ignored_without_country_match(symbol, country_code):
 def test_by_symbol_match_filters_country_code(
     invalid1, invalid2, valid, country_code, expected
 ):
-    example_string = f"You cannot pay in {invalid1} or {invalid2}. The price is {valid}3.25"
+    example_string = (
+        f"You cannot pay in {invalid1} or {invalid2}. The price is {valid}3.25"
+    )
     res = iso4217parse.by_symbol_match(example_string, country_code)
     assert len(res) == 1
     assert res[0].alpha3 == expected

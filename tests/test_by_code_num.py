@@ -8,7 +8,7 @@ def test_invalid():
 
 
 def test_all_currencies():
-    for code in iso4217parse._data().code_num.keys():
+    for code in iso4217parse._data().code_num:
         assert isinstance(iso4217parse.by_code_num(code), iso4217parse.Currency)
 
 
