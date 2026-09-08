@@ -31,15 +31,18 @@ pip install iso4217parse
 Each currency is modeled as a `collections.namedtuple`:
 
 ```python
-Currency = namedtuple('Currency', [
-    'alpha3',     # unicode:       the ISO4217 alpha3 code
-    'code_num',   # int:           the ISO4217 numeric code
-    'name',       # unicode:       the currency name
-    'symbols',    # List[unicode]: list of possible symbols;
-                  #                first is opinionated choice for representation
-    'minor',      # int:           number of decimal digits to round
-    'countries',  # List[unicode]: list of countries that use this currency.
-])
+Currency = namedtuple(
+    "Currency",
+    [
+        "alpha3",  # unicode:       the ISO4217 alpha3 code
+        "code_num",  # int:           the ISO4217 numeric code
+        "name",  # unicode:       the currency name
+        "symbols",  # List[unicode]: list of possible symbols;
+        #                first is opinionated choice for representation
+        "minor",  # int:           number of decimal digits to round
+        "countries",  # List[unicode]: list of countries that use this currency.
+    ],
+)
 ```
 
 **parse:** Try to parse the input in a best effort approach by using `by_alpha3()`, `by_code_num()`, ... functions:

@@ -28,14 +28,14 @@
 # pip install requests lxml bs4 iso3166 dateparser
 
 import json
-from pathlib import Path
 import re
 import sys
+from pathlib import Path
 
-from bs4 import BeautifulSoup
-from dateparser import parse
 import iso3166
 import requests
+from bs4 import BeautifulSoup
+from dateparser import parse
 
 # symbols see subsequent pages and http://www.xe.com/currency/
 res = requests.get("https://en.wikipedia.org/wiki/ISO_4217")
@@ -44,12 +44,12 @@ soup = BeautifulSoup(res.content, "lxml")
 tables = soup.findAll("table")
 
 if len(sys.argv) < 2:
-    print("Use like: python3 {} <output-path> [<tmp-output = 0>]".format(sys.argv[0]))
+    print(f"Use like: python3 {sys.argv[0]} <output-path> [<tmp-output = 0>]")
     sys.exit(42)
 
 p = Path(sys.argv[1]).absolute()
 if not p.is_dir():
-    print("Use like: python3 {} <output-path> [<tmp-output = 0>]".format(sys.argv[0]))
+    print(f"Use like: python3 {sys.argv[0]} <output-path> [<tmp-output = 0>]")
     sys.exit(42)
 
 tmp_out = False
@@ -100,7 +100,7 @@ additional_countries = {
 
 # get active table
 active = []
-for row in tables[1].findAll("tr"):  # noqa
+for row in tables[1].findAll("tr"):
     tds = row.findAll("td")
     if tds:
         try:
@@ -191,7 +191,7 @@ if tmp_out:
 
 # ignore historical for now
 historical = []
-for row in tables[5].findAll("tr"):  # noqa
+for row in tables[5].findAll("tr"):
     tds = row.findAll("td")
     if tds:
         code = tds[1].text
@@ -242,7 +242,7 @@ if tmp_out:
         json.dump(historical, f, indent=4, sort_keys=True, ensure_ascii=False)
 
 
-with open("{}/symbols.json".format(p), "r") as f:
+with open(f"{p}/symbols.json", "r") as f:
     symbols = json.load(f)
 
 data = dict()
@@ -267,5 +267,5 @@ for d in unofficial:
     )
 
 
-with open("{}/data.json".format(p), "w") as f:
+with open(f"{p}/data.json", "w") as f:
     json.dump(data, f, sort_keys=True, ensure_ascii=False, indent=4)
