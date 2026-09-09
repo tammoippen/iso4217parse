@@ -34,32 +34,24 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       PYTHONIOENCODING: UTF-8
+      UV_CACHE_DIR: /tmp/.uv-cache
     steps:
       - name: Checkout repo
         uses: actions/checkout@v7
 
-      - name: Set Up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v7
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10.0.1
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Cache Install
-        id: restore-cache
+      - name: Restore uv cache
         uses: actions/cache@v6
         with:
-          path: |
-            ${{ matrix.path }}
-            poetry.lock
-          key: ${{ matrix.os }}-${{ matrix.python-version }}-pip-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('tests/requirements.txt') }}
-
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: '2.4'
-          virtualenvs-create: false
+          path: /tmp/.uv-cache
+          key: uv-${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('uv.lock') }}
 
       - name: Install
-        run: poetry install
+        run: uv sync --locked
 
       - name: Style
         if: ${{ ! startsWith(matrix.python-version, 'pypy-') && startsWith(matrix.os, 'ubuntu') }}
@@ -67,6 +59,9 @@ jobs:
 
       - name: Tests
         run: make test
+
+      - name: Minimize uv cache
+        run: uv cache prune --ci
 
       - uses: codecov/codecov-action@v7
         with:

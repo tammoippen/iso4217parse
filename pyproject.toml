@@ -1,45 +1,51 @@
-[tool.poetry]
-
+[project]
 name = "iso4217parse"
 version = "0.7.0"
 description = "Parse currencies (symbols and codes) from and to ISO4217."
-authors = ["Tammo Ippen <tammo.ippen@posteo.de>"]
-license = "MIT"
-
+authors = [{ name = "Tammo Ippen", email = "tammo.ippen@posteo.de" }]
+requires-python = ">=3.11,<4"
 readme = "README.md"
-
-repository = "https://github.com/tammoippen/iso4217parse"
-homepage = "https://github.com/tammoippen/iso4217parse"
-
-include = ["tests/*.py", "iso4217parse/*.json", "iso4217parse/*.py", "setup.cfg"]
-
-keywords=['iso4217', 'currency', 'parse', 'symbol']
-
-classifiers=[
-    # Trove classifiers
-    # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
-    'License :: OSI Approved :: MIT License',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 3.11',
-    'Programming Language :: Python :: 3.12',
-    'Programming Language :: Python :: 3.13',
-    'Programming Language :: Python :: 3.14',
-    'Programming Language :: Python :: Implementation :: CPython',
-    'Programming Language :: Python :: Implementation :: PyPy'
+license = "MIT"
+keywords = [
+    "iso4217",
+    "currency",
+    "parse",
+    "symbol",
+]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.11"
+[project.urls]
+Homepage = "https://github.com/tammoippen/iso4217parse"
+Repository = "https://github.com/tammoippen/iso4217parse"
 
-[tool.poetry.group.dev.dependencies]
+[dependency-groups]
+dev = [
+    "coveralls",
+    "iso3166",
+    "mypy",
+    "pytest",
+    "pytest-cov",
+    "ruff",
+]
 
-coveralls = "*"
-iso3166 = "*"
-mypy = "*"
-pytest = "*"
-pytest-cov = "*"
-ruff = "*"
+[tool.uv]
+default-groups = "all"
+
+[tool.pytest.ini_options]
+addopts = ["--cov=iso4217parse", "--cov-branch", "--cov-report", "term-missing", "--cov-report", "html:cov_html", "--cov-report=xml:coverage.xml"]
+
+[tool.flit.sdist]
+include = ["tests/", "CHANGELOG.md"]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["flit_core >=4.0.2"]
+build-backend = "flit_core.buildapi"

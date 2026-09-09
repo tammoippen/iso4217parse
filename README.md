@@ -286,11 +286,11 @@ If you want to contribute, here are some ways you can help:
 - hand check symbols for currency code.
 - automatic generation of the `iso4217parse/symbols.json` file
 
-To setup the project for local development, be sure to use [poetry](https://python-poetry.org/) for the installation of the dependencies:
+To setup the project for local development, be sure to use [uv](https://docs.astral.sh/uv/) for the installation of the dependencies:
 
 ```sh
 # install dependencies
-> poetry install
+> uv sync
 
 # perform formatting
 > make fmt
