@@ -36,6 +36,7 @@ dev = [
     "pytest-cov",
     "ruff",
 ]
+gen = ["lxml", "bs4", "iso3166", "dateparser", "requests"]
 
 [tool.uv]
 default-groups = "all"

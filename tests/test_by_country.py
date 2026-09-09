@@ -45,7 +45,7 @@ def test_examples():
         iso4217parse.Currency(
             alpha3="CNH",
             code_num=None,
-            name="Chinese yuan",
+            name="Renminbi",
             symbols=["CN¥", "￥", "CN￥", "¥", "RMB", "元"],
             minor=2,
             countries=["HK"],
