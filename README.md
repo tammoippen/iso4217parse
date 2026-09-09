@@ -34,7 +34,7 @@ Each currency is modeled as a `typing.NamedTuple`:
 class Currency(NamedTuple):
     alpha3: str
     "the ISO4217 alpha3 code"
-    code_num: int
+    code_num: int | None
     "the ISO4217 numeric code"
     name: str
     "the currency name"
@@ -53,7 +53,8 @@ In [1]: import iso4217parse
 
 In [2]: iso4217parse.parse('CHF')
 Out[2]: [Currency(alpha3='CHF', code_num=756, name='Swiss franc',
-                  symbols=['SFr.', 'fr', 'Fr.', 'F', 'franc', 'francs', 'Franc', 'Francs'],
+                  symbols=['SFr.', 'fr', 'Fr.', 'F', 'franc', 'francs', 'Franc', 'Francs',
+                           'franc suisse', 'francs suisse', 'franc-suisse'],
                   minor=2, countries=['CH', 'LI'])]
 
 In [3]: iso4217parse.parse(192)
@@ -65,14 +66,15 @@ Out[3]:
 In [4]: iso4217parse.parse('Price is 5 €')
 Out[4]: [Currency(alpha3='EUR', code_num=978, name='Euro',
          symbols=['€', 'euro', 'euros'], minor=2,
-         countries=['AD', 'AT', 'AX', 'BE', 'BL', 'CY', 'DE', 'EE', 'ES', 'FI',
-                   'FR', 'GF', 'GP', 'GR', 'IE', 'IT', 'LT', 'LU', 'LV', 'MC',
-                   'ME', 'MF', 'MQ', 'MT', 'NL', 'PM', 'PT', 'RE', 'SI', 'SK',
-                   'SM', 'TF', 'VA', 'XK', 'YT'])]
+         countries=['AD', 'AT', 'AX', 'BE', 'BG', 'BL', 'CY', 'DE', 'EE', 'ES',
+                   'FI', 'FR', 'GF', 'GP', 'GR', 'HR', 'IE', 'IT', 'LT', 'LU',
+                   'LV', 'MC', 'ME', 'MF', 'MQ', 'MT', 'NL', 'PM', 'PT', 'RE',
+                   'SI', 'SK', 'SM', 'TF', 'VA', 'XK', 'YT'])]
 
 In [5]: iso4217parse.parse('CA﹩15.76')
 Out[5]: [Currency(alpha3='CAD', code_num=124, name='Canadian dollar',
-         symbols=['CA$', 'CA＄', '＄', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', 'CA﹩', '﹩'],
+         symbols=['CA$', 'CA＄', '＄', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', 'CA﹩', '﹩',
+                  'dollar canadien', 'dollars canadiens'],
          minor=2, countries=['CA'])]
 
 In [6]: iso4217parse.parse?
@@ -101,7 +103,8 @@ In [1]: import iso4217parse
 
 In [2]: iso4217parse.by_alpha3('CHF')
 Out[2]: Currency(alpha3='CHF', code_num=756, name='Swiss franc',
-                 symbols=['SFr.', 'fr', 'Fr.', 'F', 'franc', 'francs', 'Franc', 'Francs'],
+                 symbols=['SFr.', 'fr', 'Fr.', 'F', 'franc', 'francs', 'Franc', 'Francs',
+                          'franc suisse', 'francs suisse', 'franc-suisse'],
                  minor=2, countries=['CH', 'LI'])
 
 In [3]: iso4217parse.by_alpha3?
@@ -142,18 +145,18 @@ Returns:
 ```python
 In [1]: import iso4217parse
 
-In [2]: iso4217parse.country('HK')
+In [2]: iso4217parse.by_country('HK')
 Out[2]:
 [
   Currency(alpha3='HKD', code_num=344, name='Hong Kong dollar',
            symbols=['HK$', 'HK＄', '＄', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', 'HK﹩', '﹩', '元'],
            minor=2, countries=['HK']),
-  Currency(alpha3='CNH', code_num=None, name='Chinese yuan (when traded offshore)',
+  Currency(alpha3='CNH', code_num=None, name='Renminbi',
            symbols=['CN¥', '￥', 'CN￥', '¥', 'RMB', '元'],
            minor=2, countries=['HK'])
 ]
 
-In [3]: iso4217parse.country?
+In [3]: iso4217parse.by_country?
 Signature: iso4217parse.by_country(country_code)
 Docstring:
 Get all currencies used in country
@@ -179,14 +182,13 @@ Out[2]:
 ]
 
 In [3]: iso4217parse.by_symbol('＄')
-Out[3]: [...] # 35 different currencies
+Out[3]: [...] # 33 different currencies
 
 In [4]: [c.alpha3 for c in iso4217parse.by_symbol('＄')]
 Out[4]:
 ['ARS', 'AUD', 'BBD', 'BMD', 'BZD', 'SBD', 'BND', 'CAD', 'CVE', 'KYD', 'CLP',
  'COP', 'CUP', 'DOP', 'FJD', 'GYD', 'HKD', 'JMD', 'LRD', 'MXN', 'NAD', 'NZD',
- 'SGD', 'TTD', 'USD', 'UYU', 'TWD', 'CUC', 'ZWL', 'XCD', 'SRD', 'BRL', 'KID',
- 'NTD', 'TVD']
+ 'SGD', 'TTD', 'USD', 'UYU', 'TWD', 'XCD', 'SRD', 'BRL', 'KID', 'NTD', 'TVD']
 
 In [5]: iso4217parse.by_symbol('＄', country_code='US')
 Out[5]:
@@ -194,7 +196,8 @@ Out[5]:
   Currency(alpha3='USD', code_num=840, name='United States dollar',
            symbols=['US$', '$', '＄', '﹩', 'dollar', 'dollars', 'Dollar', 'Dollars', 'US＄', 'US﹩'],
            minor=2,
-           countries=['AS', 'EC', 'GU', 'HT', 'MH', 'MP', 'PR', 'PW', 'SV', 'TC', 'TL', 'UM', 'US'])
+           countries=['AS', 'BQ', 'EC', 'FM', 'GU', 'IO', 'MH', 'MP', 'PA', 'PR',
+                      'PW', 'SV', 'TC', 'TL', 'UM', 'US', 'VG', 'VI'])
 ]
 
 In [6]: iso4217parse.by_symbol?

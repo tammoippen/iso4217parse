@@ -46,6 +46,13 @@ addopts = ["--cov=iso4217parse", "--cov-branch", "--cov-report", "term-missing",
 
 [tool.flit.sdist]
 include = ["tests/", "CHANGELOG.md"]
+# gen_data.py scratch output; .gitignore keeps it out of git, this keeps it out of the build
+exclude = [
+    "iso4217parse/content.html",
+    "iso4217parse/active.json",
+    "iso4217parse/unofficial.json",
+    "iso4217parse/historical.json",
+]
 
 [build-system]
 requires = ["flit_core >=4.0.2"]
