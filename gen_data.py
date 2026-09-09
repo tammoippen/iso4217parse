@@ -22,39 +22,58 @@
 
 
 # This is a helper script to generate `data.json`!
-# use like `python3 gen_data.py <output-path> [<tmp-output = 0>]`
+# use like `uv run --only-group gen gen_data.py <output-path> [<tmp-output = 0>]`
 
-# execute with python 3.4 or later (pathlib)
-# pip install requests lxml bs4 iso3166 dateparser
 
 import json
-from pathlib import Path
 import re
 import sys
+from pathlib import Path
 
-from bs4 import BeautifulSoup
-from dateparser import parse
 import iso3166
 import requests
-
-# symbols see subsequent pages and http://www.xe.com/currency/
-res = requests.get("https://en.wikipedia.org/wiki/ISO_4217")
-soup = BeautifulSoup(res.content, "lxml")
-
-tables = soup.findAll("table")
+from bs4 import BeautifulSoup
+from dateparser import parse
 
 if len(sys.argv) < 2:
-    print("Use like: python3 {} <output-path> [<tmp-output = 0>]".format(sys.argv[0]))
+    print(
+        f"Use like: uv run --only-group gen {sys.argv[0]} <output-path> [<tmp-output = 0>]"
+    )
     sys.exit(42)
 
 p = Path(sys.argv[1]).absolute()
 if not p.is_dir():
-    print("Use like: python3 {} <output-path> [<tmp-output = 0>]".format(sys.argv[0]))
+    print(
+        f"Use like: uv run --only-group gen {sys.argv[0]} <output-path> [<tmp-output = 0>]"
+    )
     sys.exit(42)
 
 tmp_out = False
 if len(sys.argv) == 3:
     tmp_out = bool(int(sys.argv[2]))
+
+# symbols see subsequent pages and http://www.xe.com/currency/
+tmp_content = p / "content.html"
+if not tmp_content.is_file():
+    print("... fetching from wikipedia...")
+    res = requests.get(
+        # "https://en.wikipedia.org/wiki/ISO_4217",
+        "https://en.wikipedia.org/w/index.php?title=ISO_4217&oldid=1373880935",
+        headers={
+            "Accept-Encoding": "gzip",
+            "user-agent": "iso4217parse project at https://github.com/tammoippen/iso4217parse",
+        },
+    )
+    res.raise_for_status()
+    content = res.content
+    if tmp_out:
+        (p / "content.html").write_bytes(res.content)
+else:
+    content = tmp_content.read_bytes()
+
+soup = BeautifulSoup(content, "lxml")
+
+tables = soup.find_all("table")
 
 # some names do not resolve with iso3166 package; or are special
 alt_iso3166 = {
@@ -79,44 +98,76 @@ alt_iso3166 = {
 
 additional_countries = {
     "EUR": [
-        "Åland Islands",
+        "Austria",
+        "Belgium",
+        "Bulgaria",
+        "Croatia",
+        "Cyprus",
+        "Estonia",
+        "Finland",
+        "France",
         "French Guiana",
         "French Southern Territories",
+        "TF",  # French Southern and Antarctic Lands
+        "Germany",
+        "Greece",
+        "Guadeloupe",
         "Holy See",
-        "Saint Martin (French part)",
+        "Ireland",
+        "Italy",
+        "Latvia",
+        "Lithuania",
+        "Luxembourg",
+        "Malta",
+        "Martinique",
+        "Mayotte",
+        "Netherlands",
+        "Portugal",
+        "RE",  # Réunion
+        "Saint Barthélemy",
+        "San Marino",
+        "MF",  # Saint Martin (French part)
+        "PM",  # Saint Pierre and Miquelon
+        "Slovakia",
+        "Slovenia",
+        "Spain",
+        "Åland Islands",
     ],
     "SEK": ["Åland Islands"],
-    "EGP": [
-        "Palestine, State of"
-    ],  # see https://en.wikipedia.org/wiki/State_of_Palestine
+    # see https://en.wikipedia.org/wiki/State_of_Palestine
+    "EGP": ["Palestine, State of"],
     "ILS": ["Palestine, State of"],
     "JOD": ["Palestine, State of"],
     "FKP": ["South Georgia and the South Sandwich Islands"],
-    # 'Sahrawi peseta': ['Western Sahara'],
     "MAD": ["Western Sahara"],
-    "DZD": ["Western Sahara"],
-    "MRO": ["Western Sahara"],
+    "USD": ["USA", "BQ"],
+    "USN": ["USA"],
+    "XOF": ["CI"],
+    "XPF": ["PF"],
+    "STN": ["Sao Tome and Principe"],
+    "NOK": ["Svalbard and Jan Mayen"],
+    "TRY": ["TR"],  # Türkiye
 }
 
 # get active table
 active = []
-for row in tables[1].findAll("tr"):  # noqa
-    tds = row.findAll("td")
+for row in tables[1].find_all("tr"):
+    tds = row.find_all("td")
     if tds:
         try:
             minor = int(re.sub(r"\[[0-9]+\]", r"", tds[2].text.replace("*", "")))
         except:  # noqa: E722
             minor = 0
-        d = dict(
-            code=tds[0].text,
-            code_num=int(tds[1].text),
-            minor=minor,
-            name=re.sub(r"\[[0-9]+\]", r"", tds[3].text).strip(),
-            countries=tds[4].text.replace("\xa0", ""),
-        )
+        d = {
+            "code": tds[0].text,
+            "code_num": int(tds[1].text),
+            "minor": minor,
+            "name": re.sub(r"\[[0-9]+\]", r"", tds[3].text).strip(),
+            "countries": tds[4].text.replace("\xa0", ""),
+        }
 
         d["countries"] = re.sub(r"\([^)]+\)", r" ", d["countries"])
-        d["countries"] = re.sub(r"\[[0-9]+\]", r" ", d["countries"]).strip()
+        d["countries"] = re.sub(r"\[[0-9a-zA-Z]+\]", r" ", d["countries"]).strip()
         d["countries"] = [c.strip() for c in d["countries"].split(",") if c]
         if d["code"] in additional_countries:
             d["countries"] += additional_countries[d["code"]]
@@ -146,27 +197,31 @@ for row in tables[1].findAll("tr"):  # noqa
         active += [d]
 
 if tmp_out:
-    with open(f"{p}/active.json", "w") as f:
-        json.dump(active, f, indent=4, sort_keys=True, ensure_ascii=False)
+    (p / "active.json").write_text(
+        json.dumps(active, indent=4, sort_keys=True, ensure_ascii=False),
+        encoding="utf-8",
+    )
 
 
 # get unofficials table
 unofficial = []
-for row in tables[2].findAll("tr"):
-    tds = row.findAll("td")
+for row in tables[3].find_all("tr"):
+    tds = row.find_all("td")
     if tds:
         try:
             minor = int(re.sub(r"\[[0-9]+\]", r"", tds[2].text.replace("*", "")))
         except:  # noqa: E722
             minor = 0
-        d = dict(
-            code=tds[0].text,
-            minor=minor,
-            name=re.sub(r"\[[0-9]+\]", r"", tds[3].find("a").text).strip(),
-            countries=[a.text.strip() for a in tds[4].findAll("a")],
-        )
+        d = {
+            "code": tds[0].text,
+            "minor": minor,
+            "name": re.sub(r"\[[0-9]+\]", r"", tds[3].find("a").text).strip(),
+            "countries": [a.text.strip() for a in tds[4].find_all("a")],
+        }
         d["countries"] = [re.sub(r"\([^)]+\)", r"", c) for c in d["countries"]]
-        d["countries"] = [re.sub(r"\[[0-9]+\]", r"", c).strip() for c in d["countries"]]
+        d["countries"] = [
+            re.sub(r"\[[0-9a-zA-Z]+\]", r"", c).strip() for c in d["countries"]
+        ]
         d["countries"] = [c for c in d["countries"] if c]
 
         ccodes = []
@@ -180,19 +235,21 @@ for row in tables[2].findAll("tr"):
                 code = iso3166.countries.get(c, None)
                 if code:
                     ccodes += [code.alpha2]
-        d["code"] = re.sub(r"\[[0-9]+\]", r"", d["code"])
+        d["code"] = re.sub(r"\[[0-9a-zA-Z]+\]", r"", d["code"])
         d["country_codes"] = sorted(set(ccodes))
         unofficial += [d]
 
 if tmp_out:
-    with open(f"{p}/unofficial.json", "w") as f:
-        json.dump(unofficial, f, indent=4, sort_keys=True, ensure_ascii=False)
+    (p / "unofficial.json").write_text(
+        json.dumps(unofficial, indent=4, sort_keys=True, ensure_ascii=False),
+        encoding="utf-8",
+    )
 
 
 # ignore historical for now
 historical = []
-for row in tables[5].findAll("tr"):  # noqa
-    tds = row.findAll("td")
+for row in tables[2].find_all("tr"):
+    tds = row.find_all("td")
     if tds:
         code = tds[1].text
         if code.isnumeric():
@@ -217,55 +274,63 @@ for row in tables[5].findAll("tr"):  # noqa
                 until = None
 
         replace = tds[6].text.strip().split()
-        if len(replace) == 1:
+        if len(replace) == 0:
+            direct_replace = []
+            valid_replace = []
+        elif len(replace) == 1:
             direct_replace = replace[0].split("/")
             valid_replace = replace[0].split("/")
         elif len(replace) == 2:
             direct_replace = replace[0].split("/")
             valid_replace = replace[1].replace("(", "").replace(")", "").split("/")
+        else:
+            raise RuntimeError(f"Unknown number of {replace=}.")
 
         historical += [
-            dict(
-                code=tds[0].text,
-                code_num=None if code == "..." else code,
-                minor=minor,
-                name=re.sub(r"\[[0-9]+\]", r"", tds[3].text).strip(),
-                from_=from_,
-                until=until,
-                direct_replaced=direct_replace,
-                valid_replaced=valid_replace,
-            )
+            {
+                "code": tds[0].text,
+                "code_num": None if code == "..." else code,
+                "minor": minor,
+                "name": re.sub(r"\[[0-9]+\]", r"", tds[3].text).strip(),
+                "from_": from_,
+                "until": until,
+                "direct_replaced": direct_replace,
+                "valid_replaced": valid_replace,
+            }
         ]
 
 if tmp_out:
-    with open(f"{p}/historical.json", "w") as f:
-        json.dump(historical, f, indent=4, sort_keys=True, ensure_ascii=False)
-
-
-with open("{}/symbols.json".format(p), "r") as f:
-    symbols = json.load(f)
-
-data = dict()
-for d in active:
-    data[d["code"]] = dict(
-        name=d["name"],
-        alpha3=d["code"],
-        code_num=d["code_num"],
-        countries=d["country_codes"],
-        minor=d["minor"],
-        symbols=symbols.get(d["code"], []),
+    (p / "historical.json").write_text(
+        json.dumps(historical, indent=4, sort_keys=True, ensure_ascii=False),
+        encoding="utf-8",
     )
+
+
+symbols = json.loads((p / "symbols.json").read_text(encoding="utf-8"))
+
+data = {}
+for d in active:
+    data[d["code"]] = {
+        "name": d["name"],
+        "alpha3": d["code"],
+        "code_num": d["code_num"],
+        "countries": d["country_codes"],
+        "minor": d["minor"],
+        "symbols": symbols.get(d["code"], []),
+    }
 
 for d in unofficial:
-    data[d["code"]] = dict(
-        name=d["name"],
-        alpha3=d["code"],
-        code_num=None,  # d['code_num'],
-        countries=d["country_codes"],
-        minor=d["minor"],
-        symbols=symbols.get(d["code"], []),
-    )
+    data[d["code"]] = {
+        "name": d["name"],
+        "alpha3": d["code"],
+        "code_num": None,  # d['code_num'],
+        "countries": d["country_codes"],
+        "minor": d["minor"],
+        "symbols": symbols.get(d["code"], []),
+    }
 
 
-with open("{}/data.json".format(p), "w") as f:
-    json.dump(data, f, sort_keys=True, ensure_ascii=False, indent=4)
+(p / "data.json").write_text(
+    json.dumps(data, sort_keys=True, ensure_ascii=False, indent=4),
+    encoding="utf-8",
+)

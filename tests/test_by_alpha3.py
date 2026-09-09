@@ -8,7 +8,7 @@ def test_invalid():
 
 
 def test_all_currencies():
-    for code in iso4217parse._data().alpha3.keys():
+    for code in iso4217parse._data().alpha3:
         assert isinstance(iso4217parse.by_alpha3(code), iso4217parse.Currency)
 
 
@@ -17,7 +17,19 @@ def test_examples():
         alpha3="CHF",
         code_num=756,
         name="Swiss franc",
-        symbols=["SFr.", "fr", "Fr.", "F", "franc", "francs", "Franc", "Francs"],
+        symbols=[
+            "SFr.",
+            "fr",
+            "Fr.",
+            "F",
+            "franc",
+            "francs",
+            "Franc",
+            "Francs",
+            "franc suisse",
+            "francs suisse",
+            "franc-suisse",
+        ],
         minor=2,
         countries=["CH", "LI"],
     )

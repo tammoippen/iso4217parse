@@ -20,50 +20,51 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from collections import defaultdict, namedtuple
-from dataclasses import dataclass
-from functools import lru_cache
 import importlib.resources
 import json
 import re
-from typing import Optional
-
+from collections import defaultdict
+from dataclasses import dataclass
+from functools import lru_cache
+from typing import NamedTuple
 
 __all__ = [
     "Currency",
     "by_alpha3",
     "by_code_num",
+    "by_country",
     "by_symbol",
     "by_symbol_match",
-    "by_country",
     "parse",
 ]
 
-Currency = namedtuple(
-    "Currency",
-    [
-        "alpha3",  # unicode:       the ISO4217 alpha3 code
-        "code_num",  # int:           the ISO4217 numeric code
-        "name",  # unicode:       the currency name
-        "symbols",  # List[unicode]: list of possible symbols;
-        #                first is opinionated choice for representation
-        "minor",  # int:           number of decimal digits to round
-        "countries",  # List[unicode]: list of countries that use this currency.
-    ],
-)
+
+class Currency(NamedTuple):
+    alpha3: str
+    "the ISO4217 alpha3 code"
+    code_num: int | None
+    "the ISO4217 numeric code"
+    name: str
+    "the currency name"
+    symbols: list[str]
+    "list of possible symbols; first is opinionated choice for representation"
+    minor: int
+    "number of decimal digits to round"
+    countries: list[str]
+    "list of countries that use this currency"
 
 
 @dataclass
 class Data:
     alpha3: dict[str, Currency]
-    code_num: dict[str, Currency]
+    code_num: dict[int, Currency]
     symbol: dict[str, list[Currency]]
-    name: dict[str, Currency]
+    name: dict[str, list[Currency]]
     country: dict[str, list[Currency]]
 
 
-_DATA: Optional[Data] = None
-_SYMBOLS: Optional[list[tuple[str, str]]] = None
+_DATA: Data | None = None
+_SYMBOLS: list[tuple[str, str]] | None = None
 
 
 def _data() -> Data:
@@ -77,11 +78,17 @@ def _data() -> Data:
     """
     global _DATA
     if _DATA is None:
-        with importlib.resources.open_text("iso4217parse", "data.json") as f:
-            alpha3 = {k: Currency(**v) for k, v in json.load(f).items()}
+        alpha3 = {
+            k: Currency(**v)
+            for k, v in json.loads(
+                importlib.resources.files("iso4217parse")
+                .joinpath("data.json")
+                .read_text(encoding="utf-8")
+            ).items()
+        }
 
         code_num = {d.code_num: d for d in alpha3.values() if d.code_num is not None}
-        symbol: dict[str, list[Currency]] = defaultdict(list)
+        symbol: defaultdict[str, list[Currency]] = defaultdict(list)
         for d in alpha3.values():
             for s in d.symbols:
                 symbol[s] += [d]
@@ -91,13 +98,16 @@ def _data() -> Data:
                 ds, key=lambda d: 10000 if d.code_num is None else d.code_num
             )
 
-        name = {}
+        name: defaultdict[str, list[Currency]] = defaultdict(list)
         for d in alpha3.values():
-            if d.name in name:
-                assert 'Duplicate name "{}"!'.format(d.name)
-            name[d.name] = d
+            name[d.name] += [d]
 
-        country: dict[str, list[Currency]] = defaultdict(list)
+        for s, ds in name.items():
+            name[s] = sorted(
+                ds, key=lambda d: 10000 if d.code_num is None else d.code_num
+            )
+
+        country: defaultdict[str, list[Currency]] = defaultdict(list)
         for d in alpha3.values():
             for cc in d.countries:
                 country[cc] += [d]
@@ -112,7 +122,11 @@ def _data() -> Data:
                 ),
             )
         _DATA = Data(
-            alpha3=alpha3, code_num=code_num, symbol=symbol, name=name, country=country
+            alpha3=alpha3,
+            code_num=code_num,
+            symbol=dict(symbol),
+            name=dict(name),
+            country=dict(country),
         )
 
     return _DATA
@@ -129,15 +143,15 @@ def _symbols() -> list[tuple[str, str]]:
     """
     global _SYMBOLS
     if _SYMBOLS is None:
-        tmp = [(s, "symbol") for s in _data().symbol.keys()]
-        tmp += [(s, "alpha3") for s in _data().alpha3.keys()]
-        tmp += [(s, "name") for s in _data().name.keys()]
+        tmp = [(s, "symbol") for s in _data().symbol]
+        tmp += [(s, "alpha3") for s in _data().alpha3]
+        tmp += [(s, "name") for s in _data().name]
         _SYMBOLS = sorted(tmp, key=lambda s: (len(s[0]), ord(s[0][0])), reverse=True)
 
     return _SYMBOLS
 
 
-def by_alpha3(code: str) -> Optional[Currency]:
+def by_alpha3(code: str) -> Currency | None:
     """Get Currency for ISO4217 alpha3 code
 
     Parameters:
@@ -149,7 +163,7 @@ def by_alpha3(code: str) -> Optional[Currency]:
     return _data().alpha3.get(code)
 
 
-def by_code_num(code_num: str) -> Optional[Currency]:
+def by_code_num(code_num: int) -> Currency | None:
     """Get Currency for ISO4217 numeric code
 
     Parameters:
@@ -161,9 +175,7 @@ def by_code_num(code_num: str) -> Optional[Currency]:
     return _data().code_num.get(code_num)
 
 
-def by_symbol(
-    symbol: str, country_code: Optional[str] = None
-) -> Optional[list[Currency]]:
+def by_symbol(symbol: str, country_code: str | None = None) -> list[Currency] | None:
     """Get list of possible currencies for symbol; filter by country_code
 
     Look for all currencies that use the `symbol`. If there are currencies used
@@ -194,12 +206,12 @@ def by_symbol(
 @lru_cache(maxsize=1024)
 def _symbol_pattern(symbol: str) -> re.Pattern:
     symbol_pattern = re.escape(symbol)
-    return re.compile(rf"(^|\b|\d|\s){symbol_pattern}([^A-Z]|$)", re.I)
+    return re.compile(rf"(^|\b|\d|\s){symbol_pattern}([^A-Z]|$)", re.IGNORECASE)
 
 
 def by_symbol_match(
-    value: str, country_code: Optional[str] = None
-) -> Optional[list[Currency]]:
+    value: str, country_code: str | None = None
+) -> list[Currency] | None:
     """Get list of possible currencies where the symbol is in value; filter by country_code (iso3166 alpha2 code)
 
     Look for first matching currency symbol in `value`. Filter similar to `by_symbol`.
@@ -216,20 +228,20 @@ def by_symbol_match(
     Returns:
         List[Currency]: Currency objects found in `value`; filter by country_code.
     """
-    res: Optional[list[Currency]] = None
+    res: list[Currency] | None = None
     for symbol, group in _symbols():
         symbol_pattern = _symbol_pattern(symbol)
         if symbol_pattern.search(value):
             if group == "symbol":
                 res = by_symbol(symbol, country_code)
             if group == "alpha3":
-                curr = by_alpha3(symbol)
-                assert curr is not None
-                res = [curr]
+                curr_alpha3 = by_alpha3(symbol)
+                assert curr_alpha3 is not None
+                res = [curr_alpha3]
             if group == "name":
-                curr = _data().name[symbol]
-                assert curr is not None
-                res = [curr]
+                curr_name = _data().name.get(symbol)
+                assert curr_name is not None
+                res = curr_name
             if res and country_code is not None:
                 res = [
                     currency for currency in res if country_code in currency.countries
@@ -240,7 +252,7 @@ def by_symbol_match(
     return None
 
 
-def by_country(country_code: str) -> Optional[list[Currency]]:
+def by_country(country_code: str) -> list[Currency] | None:
     """Get all currencies used in country
 
     Parameters:
@@ -253,7 +265,7 @@ def by_country(country_code: str) -> Optional[list[Currency]]:
     return _data().country.get(country_code)
 
 
-def parse(v: str, country_code: Optional[str] = None) -> Optional[list[Currency]]:
+def parse(v: str, country_code: str | None = None) -> list[Currency] | None:
     """Try parse `v` to currencies; filter by country_code
 
     If `v` is a number, try `by_code_num()`; otherwise try:
@@ -274,9 +286,7 @@ def parse(v: str, country_code: Optional[str] = None) -> Optional[list[Currency]
         return [] if not res else [res]
 
     if not isinstance(v, str):
-        raise ValueError(
-            "`v` of incorrect type {}. Only accepts str, bytes, unicode and int."
-        )
+        raise TypeError(f"{v=} of incorrect type {type(v)}. Only accepts str and int.")
 
     # check alpha3
     if re.match("^[A-Z]{3}$", v):

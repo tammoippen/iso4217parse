@@ -1,7 +1,7 @@
 [![CI](https://github.com/tammoippen/iso4217parse/actions/workflows/CI.yml/badge.svg?branch=master)](https://github.com/tammoippen/iso4217parse/actions/workflows/CI.yml)
 [![Coverage Status](https://coveralls.io/repos/github/tammoippen/iso4217parse/badge.svg?branch=master)](https://coveralls.io/github/tammoippen/iso4217parse?branch=master)
-[![Tested CPython Versions](https://img.shields.io/badge/cpython-3.9%2C%203.10%2C%203.11%2C%203.12%2C%203.13-brightgreen.svg)](https://img.shields.io/badge/cpython-3.9%2C%203.10%2C%203.11%2C%203.12%2C%203.13-brightgreen.svg)
-[![Tested PyPy Versions](https://img.shields.io/badge/pypy-3.9%2C%203.10-brightgreen.svg)](https://img.shields.io/badge/pypy-3.9%2C%203.10%2C%203.10-brightgreen.svg)
+[![Tested CPython Versions](https://img.shields.io/badge/cpython-3.11%2C%203.12%2C%203.13%2C%203.14-brightgreen.svg)](https://img.shields.io/badge/cpython-3.11%2C%203.12%2C%203.13%2C%203.14-brightgreen.svg)
+[![Tested PyPy Versions](https://img.shields.io/badge/pypy-3.11-brightgreen.svg)](https://img.shields.io/badge/pypy-3.11-brightgreen.svg)
 [![PyPi version](https://img.shields.io/pypi/v/iso4217parse.svg)](https://pypi.python.org/pypi/iso4217parse)
 [![PyPi license](https://img.shields.io/pypi/l/iso4217parse.svg)](https://pypi.python.org/pypi/iso4217parse)
 
@@ -24,22 +24,26 @@ Install:
 pip install iso4217parse
 ```
 
-**(If you are required to use python version 2.7 or lower than 3.9, please use version [0.5.1](https://pypi.org/project/iso4217parse/0.5.1/))**
+**(If you are required to use python version 2.7 or lower than 3.9, please use version [0.5.1](https://pypi.org/project/iso4217parse/0.5.1/). If you require 3.9 or 3.10, please use [0.6.2](https://pypi.org/project/iso4217parse/0.6.2/))**
 
 ## Documentation
 
-Each currency is modeled as a `collections.namedtuple`:
+Each currency is modeled as a `typing.NamedTuple`:
 
 ```python
-Currency = namedtuple('Currency', [
-    'alpha3',     # unicode:       the ISO4217 alpha3 code
-    'code_num',   # int:           the ISO4217 numeric code
-    'name',       # unicode:       the currency name
-    'symbols',    # List[unicode]: list of possible symbols;
-                  #                first is opinionated choice for representation
-    'minor',      # int:           number of decimal digits to round
-    'countries',  # List[unicode]: list of countries that use this currency.
-])
+class Currency(NamedTuple):
+    alpha3: str
+    "the ISO4217 alpha3 code"
+    code_num: int | None
+    "the ISO4217 numeric code"
+    name: str
+    "the currency name"
+    symbols: list[str]
+    "list of possible symbols; first is opinionated choice for representation"
+    minor: int
+    "number of decimal digits to round"
+    countries: list[str]
+    "list of countries that use this currency"
 ```
 
 **parse:** Try to parse the input in a best effort approach by using `by_alpha3()`, `by_code_num()`, ... functions:
@@ -49,7 +53,8 @@ In [1]: import iso4217parse
 
 In [2]: iso4217parse.parse('CHF')
 Out[2]: [Currency(alpha3='CHF', code_num=756, name='Swiss franc',
-                  symbols=['SFr.', 'fr', 'Fr.', 'F', 'franc', 'francs', 'Franc', 'Francs'],
+                  symbols=['SFr.', 'fr', 'Fr.', 'F', 'franc', 'francs', 'Franc', 'Francs',
+                           'franc suisse', 'francs suisse', 'franc-suisse'],
                   minor=2, countries=['CH', 'LI'])]
 
 In [3]: iso4217parse.parse(192)
@@ -61,14 +66,15 @@ Out[3]:
 In [4]: iso4217parse.parse('Price is 5 €')
 Out[4]: [Currency(alpha3='EUR', code_num=978, name='Euro',
          symbols=['€', 'euro', 'euros'], minor=2,
-         countries=['AD', 'AT', 'AX', 'BE', 'BL', 'CY', 'DE', 'EE', 'ES', 'FI',
-                   'FR', 'GF', 'GP', 'GR', 'IE', 'IT', 'LT', 'LU', 'LV', 'MC',
-                   'ME', 'MF', 'MQ', 'MT', 'NL', 'PM', 'PT', 'RE', 'SI', 'SK',
-                   'SM', 'TF', 'VA', 'XK', 'YT'])]
+         countries=['AD', 'AT', 'AX', 'BE', 'BG', 'BL', 'CY', 'DE', 'EE', 'ES',
+                   'FI', 'FR', 'GF', 'GP', 'GR', 'HR', 'IE', 'IT', 'LT', 'LU',
+                   'LV', 'MC', 'ME', 'MF', 'MQ', 'MT', 'NL', 'PM', 'PT', 'RE',
+                   'SI', 'SK', 'SM', 'TF', 'VA', 'XK', 'YT'])]
 
 In [5]: iso4217parse.parse('CA﹩15.76')
 Out[5]: [Currency(alpha3='CAD', code_num=124, name='Canadian dollar',
-         symbols=['CA$', 'CA＄', '＄', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', 'CA﹩', '﹩'],
+         symbols=['CA$', 'CA＄', '＄', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', 'CA﹩', '﹩',
+                  'dollar canadien', 'dollars canadiens'],
          minor=2, countries=['CA'])]
 
 In [6]: iso4217parse.parse?
@@ -97,7 +103,8 @@ In [1]: import iso4217parse
 
 In [2]: iso4217parse.by_alpha3('CHF')
 Out[2]: Currency(alpha3='CHF', code_num=756, name='Swiss franc',
-                 symbols=['SFr.', 'fr', 'Fr.', 'F', 'franc', 'francs', 'Franc', 'Francs'],
+                 symbols=['SFr.', 'fr', 'Fr.', 'F', 'franc', 'francs', 'Franc', 'Francs',
+                          'franc suisse', 'francs suisse', 'franc-suisse'],
                  minor=2, countries=['CH', 'LI'])
 
 In [3]: iso4217parse.by_alpha3?
@@ -138,18 +145,18 @@ Returns:
 ```python
 In [1]: import iso4217parse
 
-In [2]: iso4217parse.country('HK')
+In [2]: iso4217parse.by_country('HK')
 Out[2]:
 [
   Currency(alpha3='HKD', code_num=344, name='Hong Kong dollar',
            symbols=['HK$', 'HK＄', '＄', '$', 'dollar', 'dollars', 'Dollar', 'Dollars', 'HK﹩', '﹩', '元'],
            minor=2, countries=['HK']),
-  Currency(alpha3='CNH', code_num=None, name='Chinese yuan (when traded offshore)',
+  Currency(alpha3='CNH', code_num=None, name='Renminbi',
            symbols=['CN¥', '￥', 'CN￥', '¥', 'RMB', '元'],
            minor=2, countries=['HK'])
 ]
 
-In [3]: iso4217parse.country?
+In [3]: iso4217parse.by_country?
 Signature: iso4217parse.by_country(country_code)
 Docstring:
 Get all currencies used in country
@@ -175,14 +182,13 @@ Out[2]:
 ]
 
 In [3]: iso4217parse.by_symbol('＄')
-Out[3]: [...] # 35 different currencies
+Out[3]: [...] # 33 different currencies
 
 In [4]: [c.alpha3 for c in iso4217parse.by_symbol('＄')]
 Out[4]:
 ['ARS', 'AUD', 'BBD', 'BMD', 'BZD', 'SBD', 'BND', 'CAD', 'CVE', 'KYD', 'CLP',
  'COP', 'CUP', 'DOP', 'FJD', 'GYD', 'HKD', 'JMD', 'LRD', 'MXN', 'NAD', 'NZD',
- 'SGD', 'TTD', 'USD', 'UYU', 'TWD', 'CUC', 'ZWL', 'XCD', 'SRD', 'BRL', 'KID',
- 'NTD', 'TVD']
+ 'SGD', 'TTD', 'USD', 'UYU', 'TWD', 'XCD', 'SRD', 'BRL', 'KID', 'NTD', 'TVD']
 
 In [5]: iso4217parse.by_symbol('＄', country_code='US')
 Out[5]:
@@ -190,7 +196,8 @@ Out[5]:
   Currency(alpha3='USD', code_num=840, name='United States dollar',
            symbols=['US$', '$', '＄', '﹩', 'dollar', 'dollars', 'Dollar', 'Dollars', 'US＄', 'US﹩'],
            minor=2,
-           countries=['AS', 'EC', 'GU', 'HT', 'MH', 'MP', 'PR', 'PW', 'SV', 'TC', 'TL', 'UM', 'US'])
+           countries=['AS', 'BQ', 'EC', 'FM', 'GU', 'IO', 'MH', 'MP', 'PA', 'PR',
+                      'PW', 'SV', 'TC', 'TL', 'UM', 'US', 'VG', 'VI'])
 ]
 
 In [6]: iso4217parse.by_symbol?
@@ -282,11 +289,11 @@ If you want to contribute, here are some ways you can help:
 - hand check symbols for currency code.
 - automatic generation of the `iso4217parse/symbols.json` file
 
-To setup the project for local development, be sure to use [poetry](https://python-poetry.org/) for the installation of the dependencies:
+To setup the project for local development, be sure to use [uv](https://docs.astral.sh/uv/) for the installation of the dependencies:
 
 ```sh
 # install dependencies
-> poetry install
+> uv sync
 
 # perform formatting
 > make fmt

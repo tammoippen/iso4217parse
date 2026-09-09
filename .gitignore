@@ -12,10 +12,14 @@ __pycache__/
 .ruff_cache/
 dist/
 pyproject.lock
-poetry.lock
 cov_html/
 coverage.xml
 .pytest_cache/
 .hypothesis/
 .venv/
 venv/
+# gen artifacts
+content.html
+active.json
+unofficial.json
+historical.json
