@@ -39,7 +39,7 @@ dev = [
 gen = ["lxml", "bs4", "iso3166", "dateparser", "requests"]
 
 [tool.uv]
-default-groups = "all"
+default-groups = ["dev"]
 
 [tool.pytest.ini_options]
 addopts = ["--cov=iso4217parse", "--cov-branch", "--cov-report", "term-missing", "--cov-report", "html:cov_html", "--cov-report=xml:coverage.xml"]

@@ -18,3 +18,8 @@ coverage.xml
 .hypothesis/
 .venv/
 venv/
+# gen artifacts
+content.html
+active.json
+unofficial.json
+historical.json

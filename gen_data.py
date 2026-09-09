@@ -64,13 +64,16 @@ if not tmp_content.is_file():
             "user-agent": "iso4217parse project at https://github.com/tammoippen/iso4217parse",
         },
     )
-    (p / "content.html").write_bytes(res.content)
+    res.raise_for_status()
+    content = res.content
+    if tmp_out:
+        (p / "content.html").write_bytes(res.content)
+else:
+    content = tmp_content.read_bytes()
 
-content = tmp_content.read_bytes()
 soup = BeautifulSoup(content, "lxml")
 
 tables = soup.find_all("table")
-print(len(tables))
 
 # some names do not resolve with iso3166 package; or are special
 alt_iso3166 = {
@@ -131,16 +134,12 @@ additional_countries = {
         "Åland Islands",
     ],
     "SEK": ["Åland Islands"],
-    "EGP": [
-        "Palestine, State of"
-    ],  # see https://en.wikipedia.org/wiki/State_of_Palestine
+    # see https://en.wikipedia.org/wiki/State_of_Palestine
+    "EGP": ["Palestine, State of"],
     "ILS": ["Palestine, State of"],
     "JOD": ["Palestine, State of"],
     "FKP": ["South Georgia and the South Sandwich Islands"],
-    # 'Sahrawi peseta': ['Western Sahara'],
     "MAD": ["Western Sahara"],
-    "DZD": ["Western Sahara"],
-    "MRO": ["Western Sahara"],
     "USD": ["USA", "BQ"],
     "USN": ["USA"],
     "XOF": ["CI"],
