@@ -42,7 +42,7 @@ __all__ = [
 class Currency(NamedTuple):
     alpha3: str
     "the ISO4217 alpha3 code"
-    code_num: int
+    code_num: int | None
     "the ISO4217 numeric code"
     name: str
     "the currency name"
@@ -78,11 +78,17 @@ def _data() -> Data:
     """
     global _DATA
     if _DATA is None:
-        with importlib.resources.open_text("iso4217parse", "data.json") as f:
-            alpha3 = {k: Currency(**v) for k, v in json.load(f).items()}
+        alpha3 = {
+            k: Currency(**v)
+            for k, v in json.loads(
+                importlib.resources.files("iso4217parse")
+                .joinpath("data.json")
+                .read_text(encoding="utf-8")
+            ).items()
+        }
 
         code_num = {d.code_num: d for d in alpha3.values() if d.code_num is not None}
-        symbol: dict[str, list[Currency]] = defaultdict(list)
+        symbol: defaultdict[str, list[Currency]] = defaultdict(list)
         for d in alpha3.values():
             for s in d.symbols:
                 symbol[s] += [d]
@@ -92,13 +98,16 @@ def _data() -> Data:
                 ds, key=lambda d: 10000 if d.code_num is None else d.code_num
             )
 
-        name: dict[str, list[Currency]] = defaultdict(list)
+        name: defaultdict[str, list[Currency]] = defaultdict(list)
         for d in alpha3.values():
-            if d.name in name:
-                print(f'Duplicate name "{d.name}"!')
             name[d.name] += [d]
 
-        country: dict[str, list[Currency]] = defaultdict(list)
+        for s, ds in name.items():
+            name[s] = sorted(
+                ds, key=lambda d: 10000 if d.code_num is None else d.code_num
+            )
+
+        country: defaultdict[str, list[Currency]] = defaultdict(list)
         for d in alpha3.values():
             for cc in d.countries:
                 country[cc] += [d]
@@ -113,7 +122,11 @@ def _data() -> Data:
                 ),
             )
         _DATA = Data(
-            alpha3=alpha3, code_num=code_num, symbol=symbol, name=name, country=country
+            alpha3=alpha3,
+            code_num=code_num,
+            symbol=dict(symbol),
+            name=dict(name),
+            country=dict(country),
         )
 
     return _DATA
@@ -226,7 +239,7 @@ def by_symbol_match(
                 assert curr_alpha3 is not None
                 res = [curr_alpha3]
             if group == "name":
-                curr_name = _data().name[symbol]
+                curr_name = _data().name.get(symbol)
                 assert curr_name is not None
                 res = curr_name
             if res and country_code is not None:
@@ -273,9 +286,7 @@ def parse(v: str, country_code: str | None = None) -> list[Currency] | None:
         return [] if not res else [res]
 
     if not isinstance(v, str):
-        raise TypeError(
-            "`v` of incorrect type {}. Only accepts str, bytes, unicode and int."
-        )
+        raise TypeError(f"{v=} of incorrect type {type(v)}. Only accepts str and int.")
 
     # check alpha3
     if re.match("^[A-Z]{3}$", v):

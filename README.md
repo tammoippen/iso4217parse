@@ -24,7 +24,7 @@ Install:
 pip install iso4217parse
 ```
 
-**(If you are required to use python version 2.7 or lower than 3.9, please use version [0.5.1](https://pypi.org/project/iso4217parse/0.5.1/))**
+**(If you are required to use python version 2.7 or lower than 3.9, please use version [0.5.1](https://pypi.org/project/iso4217parse/0.5.1/). If you require 3.9 or 3.10, please use [0.6.2](https://pypi.org/project/iso4217parse/0.6.2/))**
 
 ## Documentation
 

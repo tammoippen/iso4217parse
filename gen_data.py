@@ -146,8 +146,10 @@ for row in tables[1].findAll("tr"):
         active += [d]
 
 if tmp_out:
-    with open(f"{p}/active.json", "w") as f:
-        json.dump(active, f, indent=4, sort_keys=True, ensure_ascii=False)
+    (p / "active.json").write_text(
+        json.dumps(active, indent=4, sort_keys=True, ensure_ascii=False),
+        encoding="utf-8",
+    )
 
 
 # get unofficials table
@@ -185,8 +187,10 @@ for row in tables[2].findAll("tr"):
         unofficial += [d]
 
 if tmp_out:
-    with open(f"{p}/unofficial.json", "w") as f:
-        json.dump(unofficial, f, indent=4, sort_keys=True, ensure_ascii=False)
+    (p / "unofficial.json").write_text(
+        json.dumps(unofficial, indent=4, sort_keys=True, ensure_ascii=False),
+        encoding="utf-8",
+    )
 
 
 # ignore historical for now
@@ -223,6 +227,8 @@ for row in tables[5].findAll("tr"):
         elif len(replace) == 2:
             direct_replace = replace[0].split("/")
             valid_replace = replace[1].replace("(", "").replace(")", "").split("/")
+        else:
+            raise RuntimeError(f"Unknown number of {replace=}.")
 
         historical += [
             {
@@ -238,12 +244,13 @@ for row in tables[5].findAll("tr"):
         ]
 
 if tmp_out:
-    with open(f"{p}/historical.json", "w") as f:
-        json.dump(historical, f, indent=4, sort_keys=True, ensure_ascii=False)
+    (p / "historical.json").write_text(
+        json.dumps(historical, indent=4, sort_keys=True, ensure_ascii=False),
+        encoding="utf-8",
+    )
 
 
-with open(f"{p}/symbols.json", "r") as f:
-    symbols = json.load(f)
+symbols = json.loads((p / "symbols.json").read_text(encoding="utf-8"))
 
 data = {}
 for d in active:
@@ -267,5 +274,7 @@ for d in unofficial:
     }
 
 
-with open(f"{p}/data.json", "w") as f:
-    json.dump(data, f, sort_keys=True, ensure_ascii=False, indent=4)
+(p / "data.json").write_text(
+    json.dumps(data, sort_keys=True, ensure_ascii=False, indent=4),
+    encoding="utf-8",
+)

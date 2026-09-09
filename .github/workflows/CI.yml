@@ -70,7 +70,7 @@ jobs:
 
       - uses: codecov/codecov-action@v7
         with:
-          file: coverage.xml
+          files: coverage.xml
           name: coverage-${{ matrix.os }}-${{ matrix.python-version }}
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
